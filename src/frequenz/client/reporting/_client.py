@@ -122,7 +122,7 @@ class ReportingApiClient:
         self._stub = ReportingStub(self._grpc_channel)
 
     # pylint: disable=too-many-arguments
-    async def iterate_single_component(
+    async def list_single_component_data(
         self,
         *,
         microgrid_id: int,
@@ -147,7 +147,7 @@ class ReportingApiClient:
             * timestamp: The timestamp of the metric sample.
             * value: The metric value.
         """
-        async for page in self._iterate_components_data_pages(
+        async for page in self._list_microgrid_components_data_pages(
             microgrid_components=[(microgrid_id, [component_id])],
             metrics=[metrics] if isinstance(metrics, Metric) else metrics,
             start_dt=start_dt,
@@ -158,7 +158,7 @@ class ReportingApiClient:
                 yield entry
 
     # pylint: disable=too-many-arguments
-    async def _iterate_components_data_pages(
+    async def _list_microgrid_components_data_pages(
         self,
         *,
         microgrid_components: list[tuple[int, list[int]]],

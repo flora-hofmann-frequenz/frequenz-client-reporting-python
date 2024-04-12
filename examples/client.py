@@ -106,7 +106,7 @@ async def run(
         Returns:
             Iterator over single metric samples
         """
-        return client.iterate_single_component(
+        return client.list_single_component_data(
             microgrid_id=microgrid_id,
             component_id=component_id,
             metrics=metrics,
