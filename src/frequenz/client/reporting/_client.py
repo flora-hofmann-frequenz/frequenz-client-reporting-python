@@ -34,7 +34,12 @@ from google.protobuf.timestamp_pb2 import Timestamp as PBTimestamp
 MetricSample = namedtuple(
     "MetricSample", ["timestamp", "microgrid_id", "component_id", "metric", "value"]
 )
-"""Type for a sample of a time series incl. metric type, microgrid and component ID"""
+"""Type for a sample of a time series incl. metric type, microgrid and component ID
+
+A named tuple was chosen to allow safe access to the fields while keeping the
+simplicity of a tuple. This data type can be easily used to create a numpy array
+or a pandas DataFrame.
+"""
 
 
 @dataclass(frozen=True)
