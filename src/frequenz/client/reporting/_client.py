@@ -6,7 +6,7 @@
 from collections import namedtuple
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, AsyncIterator, Awaitable, Generator, Type, cast
+from typing import Any, AsyncIterator, Awaitable, Iterator, Type, cast
 
 import grpc.aio as grpcaio
 
@@ -58,7 +58,7 @@ class ComponentsDataPage:
             return True
         return False
 
-    def iterate_metric_samples(self) -> Generator[MetricSample, None, None]:
+    def __iter__(self) -> Iterator[MetricSample]:
         """Get generator that iterates over all values in the page.
 
         Note: So far only `SimpleMetricSample` in the `MetricSampleVariant`
@@ -149,7 +149,7 @@ class ReportingClient:
             end_dt=end_dt,
             page_size=page_size,
         ):
-            for entry in page.iterate_metric_samples():
+            for entry in page:
                 yield entry
 
     # pylint: disable=too-many-arguments
