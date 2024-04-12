@@ -7,7 +7,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from frequenz.client.reporting import ReportingClient
+from frequenz.client.reporting import ReportingApiClient
 from frequenz.client.reporting._client import ComponentsDataPage
 
 
@@ -21,7 +21,7 @@ def mock_channel() -> Generator[MagicMock, None, None]:
 @pytest.mark.asyncio
 async def test_client_initialization(mock_channel: MagicMock) -> None:
     """Test that the client initializes the channel."""
-    client = ReportingClient("localhost:50051")  # noqa: F841
+    client = ReportingApiClient("localhost:50051")  # noqa: F841
     mock_channel.assert_called_once_with("localhost:50051")
 
 
