@@ -95,7 +95,7 @@ class ComponentsDataPage:
                     )
 
     @property
-    def next_page_token(self) -> Any:
+    def next_page_token(self) -> str | None:
         """Get the token for the next page of data.
 
         Returns:
