@@ -585,15 +585,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#frequenz.client.reporting.ReportingClient" class="md-nav__link">
-    ReportingClient
+  <a href="#frequenz.client.reporting.ReportingApiClient" class="md-nav__link">
+    ReportingApiClient
   </a>
   
-    <nav class="md-nav" aria-label="ReportingClient">
+    <nav class="md-nav" aria-label="ReportingApiClient">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#frequenz.client.reporting.ReportingClient-functions" class="md-nav__link">
+  <a href="#frequenz.client.reporting.ReportingApiClient-functions" class="md-nav__link">
     Functions
   </a>
   
@@ -601,35 +601,35 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#frequenz.client.reporting.ReportingClient.__aenter__" class="md-nav__link">
+  <a href="#frequenz.client.reporting.ReportingApiClient.__aenter__" class="md-nav__link">
     __aenter__
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#frequenz.client.reporting.ReportingClient.__aexit__" class="md-nav__link">
+  <a href="#frequenz.client.reporting.ReportingApiClient.__aexit__" class="md-nav__link">
     __aexit__
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#frequenz.client.reporting.ReportingClient.__init__" class="md-nav__link">
+  <a href="#frequenz.client.reporting.ReportingApiClient.__init__" class="md-nav__link">
     __init__
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#frequenz.client.reporting.ReportingClient.close" class="md-nav__link">
+  <a href="#frequenz.client.reporting.ReportingApiClient.close" class="md-nav__link">
     close
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#frequenz.client.reporting.ReportingClient.iterate_single_component" class="md-nav__link">
+  <a href="#frequenz.client.reporting.ReportingApiClient.iterate_single_component" class="md-nav__link">
     iterate_single_component
   </a>
   
@@ -705,11 +705,11 @@
 
 
 
-<h4 id="frequenz.client.reporting.ReportingClient" class="doc doc-heading">
-          <span class="doc doc-object-name doc-class-name">frequenz.client.reporting.ReportingClient</span>
+<h4 id="frequenz.client.reporting.ReportingApiClient" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">frequenz.client.reporting.ReportingApiClient</span>
 
 
-<a href="#frequenz.client.reporting.ReportingClient" class="headerlink" title="Permanent link">¤</a></h4>
+<a href="#frequenz.client.reporting.ReportingApiClient" class="headerlink" title="Permanent link">¤</a></h4>
 
 
   <div class="doc doc-contents ">
@@ -898,7 +898,7 @@
 <span class="normal"><a href="#__codelineno-0-288">288</a></span>
 <span class="normal"><a href="#__codelineno-0-289">289</a></span>
 <span class="normal"><a href="#__codelineno-0-290">290</a></span>
-<span class="normal"><a href="#__codelineno-0-291">291</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-112"><a id="__codelineno-0-112" name="__codelineno-0-112"></a><span class="k">class</span> <span class="nc">ReportingClient</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-291">291</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-112"><a id="__codelineno-0-112" name="__codelineno-0-112"></a><span class="k">class</span> <span class="nc">ReportingApiClient</span><span class="p">:</span>
 </span><span id="__span-0-113"><a id="__codelineno-0-113" name="__codelineno-0-113"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;A client for the Reporting service.&quot;&quot;&quot;</span>
 </span><span id="__span-0-114"><a id="__codelineno-0-114" name="__codelineno-0-114"></a>
 </span><span id="__span-0-115"><a id="__codelineno-0-115" name="__codelineno-0-115"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -1053,7 +1053,7 @@
 </span><span id="__span-0-264"><a id="__codelineno-0-264" name="__codelineno-0-264"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Close the client and cancel any pending requests immediately.&quot;&quot;&quot;</span>
 </span><span id="__span-0-265"><a id="__codelineno-0-265" name="__codelineno-0-265"></a>        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grpc_channel</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">grace</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </span><span id="__span-0-266"><a id="__codelineno-0-266" name="__codelineno-0-266"></a>
-</span><span id="__span-0-267"><a id="__codelineno-0-267" name="__codelineno-0-267"></a>    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ReportingClient&quot;</span><span class="p">:</span>
+</span><span id="__span-0-267"><a id="__codelineno-0-267" name="__codelineno-0-267"></a>    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ReportingApiClient&quot;</span><span class="p">:</span>
 </span><span id="__span-0-268"><a id="__codelineno-0-268" name="__codelineno-0-268"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Enter the async context.&quot;&quot;&quot;</span>
 </span><span id="__span-0-269"><a id="__codelineno-0-269" name="__codelineno-0-269"></a>        <span class="k">return</span> <span class="bp">self</span>
 </span><span id="__span-0-270"><a id="__codelineno-0-270" name="__codelineno-0-270"></a>
@@ -1091,14 +1091,14 @@
 
 
 
-<h5 id="frequenz.client.reporting.ReportingClient-functions">Functions<a href="#frequenz.client.reporting.ReportingClient-functions" class="headerlink" title="Permanent link">¤</a></h5>
+<h5 id="frequenz.client.reporting.ReportingApiClient-functions">Functions<a href="#frequenz.client.reporting.ReportingApiClient-functions" class="headerlink" title="Permanent link">¤</a></h5>
 
 
 <div class="doc doc-object doc-function">
 
 
 
-<h6 id="frequenz.client.reporting.ReportingClient.__aenter__" class="doc doc-heading">
+<h6 id="frequenz.client.reporting.ReportingApiClient.__aenter__" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">__aenter__</span>
 
   
@@ -1106,8 +1106,8 @@
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
-<a href="#frequenz.client.reporting.ReportingClient.__aenter__" class="headerlink" title="Permanent link">¤</a></h6>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="fm">__aenter__</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nf"><a class="autorefs autorefs-internal" title="frequenz.client.reporting._client.ReportingClient" href="#frequenz.client.reporting.ReportingClient">ReportingClient</a></span>
+<a href="#frequenz.client.reporting.ReportingApiClient.__aenter__" class="headerlink" title="Permanent link">¤</a></h6>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="fm">__aenter__</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nf"><a class="autorefs autorefs-internal" title="frequenz.client.reporting._client.ReportingApiClient" href="#frequenz.client.reporting.ReportingApiClient">ReportingApiClient</a></span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1118,7 +1118,7 @@
             <summary>Source code in <code>frequenz/client/reporting/_client.py</code></summary>
             <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-267">267</a></span>
 <span class="normal"><a href="#__codelineno-0-268">268</a></span>
-<span class="normal"><a href="#__codelineno-0-269">269</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-267"><a id="__codelineno-0-267" name="__codelineno-0-267"></a><span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ReportingClient&quot;</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-269">269</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-267"><a id="__codelineno-0-267" name="__codelineno-0-267"></a><span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ReportingApiClient&quot;</span><span class="p">:</span>
 </span><span id="__span-0-268"><a id="__codelineno-0-268" name="__codelineno-0-268"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Enter the async context.&quot;&quot;&quot;</span>
 </span><span id="__span-0-269"><a id="__codelineno-0-269" name="__codelineno-0-269"></a>    <span class="k">return</span> <span class="bp">self</span>
 </span></code></pre></div></td></tr></table></div>
@@ -1132,7 +1132,7 @@
 
 
 
-<h6 id="frequenz.client.reporting.ReportingClient.__aexit__" class="doc doc-heading">
+<h6 id="frequenz.client.reporting.ReportingApiClient.__aexit__" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">__aexit__</span>
 
   
@@ -1140,7 +1140,7 @@
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
-<a href="#frequenz.client.reporting.ReportingClient.__aexit__" class="headerlink" title="Permanent link">¤</a></h6>
+<a href="#frequenz.client.reporting.ReportingApiClient.__aexit__" class="headerlink" title="Permanent link">¤</a></h6>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="fm">__aexit__</span><span class="p">(</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="nf">_exc_type</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Type" href="https://docs.python.org/3/library/typing.html#typing.Type">Type</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/exceptions.html#BaseException">BaseException</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">_exc_val</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/exceptions.html#BaseException">BaseException</a></span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
@@ -1287,11 +1287,11 @@
 
 
 
-<h6 id="frequenz.client.reporting.ReportingClient.__init__" class="doc doc-heading">
+<h6 id="frequenz.client.reporting.ReportingApiClient.__init__" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">__init__</span>
 
 
-<a href="#frequenz.client.reporting.ReportingClient.__init__" class="headerlink" title="Permanent link">¤</a></h6>
+<a href="#frequenz.client.reporting.ReportingApiClient.__init__" class="headerlink" title="Permanent link">¤</a></h6>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="fm">__init__</span><span class="p">(</span><span class="nf">service_address</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">)</span>
 </span></code></pre></div>
 
@@ -1354,7 +1354,7 @@
 
 
 
-<h6 id="frequenz.client.reporting.ReportingClient.close" class="doc doc-heading">
+<h6 id="frequenz.client.reporting.ReportingApiClient.close" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">close</span>
 
   
@@ -1362,7 +1362,7 @@
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
-<a href="#frequenz.client.reporting.ReportingClient.close" class="headerlink" title="Permanent link">¤</a></h6>
+<a href="#frequenz.client.reporting.ReportingApiClient.close" class="headerlink" title="Permanent link">¤</a></h6>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">close</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 </span></code></pre></div>
 
@@ -1388,7 +1388,7 @@
 
 
 
-<h6 id="frequenz.client.reporting.ReportingClient.iterate_single_component" class="doc doc-heading">
+<h6 id="frequenz.client.reporting.ReportingApiClient.iterate_single_component" class="doc doc-heading">
           <span class="doc doc-object-name doc-function-name">iterate_single_component</span>
 
   
@@ -1396,7 +1396,7 @@
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
-<a href="#frequenz.client.reporting.ReportingClient.iterate_single_component" class="headerlink" title="Permanent link">¤</a></h6>
+<a href="#frequenz.client.reporting.ReportingApiClient.iterate_single_component" class="headerlink" title="Permanent link">¤</a></h6>
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">iterate_single_component</span><span class="p">(</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="o">*</span><span class="p">,</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">microgrid_id</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">,</span>
