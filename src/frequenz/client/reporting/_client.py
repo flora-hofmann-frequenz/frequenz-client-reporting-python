@@ -109,7 +109,7 @@ class ComponentsDataPage:
         return self._data_pb.pagination_info.next_page_token
 
 
-class ReportingClient:
+class ReportingApiClient:
     """A client for the Reporting service."""
 
     def __init__(self, service_address: str):
@@ -264,7 +264,7 @@ class ReportingClient:
         """Close the client and cancel any pending requests immediately."""
         await self._grpc_channel.close(grace=None)
 
-    async def __aenter__(self) -> "ReportingClient":
+    async def __aenter__(self) -> "ReportingApiClient":
         """Enter the async context."""
         return self
 

@@ -12,7 +12,7 @@ from typing import AsyncIterator
 import pandas as pd
 from frequenz.client.common.metric import Metric
 
-from frequenz.client.reporting import ReportingClient
+from frequenz.client.reporting import ReportingApiClient
 
 # Experimental import
 from frequenz.client.reporting._client import MetricSample
@@ -79,7 +79,7 @@ async def run(
     service_address: str,
     display: str,
 ) -> None:
-    """Test the ReportingClient.
+    """Test the ReportingApiClient.
 
     Args:
         microgrid_id: microgrid ID
@@ -94,7 +94,7 @@ async def run(
     Raises:
         ValueError: if display format is invalid
     """
-    client = ReportingClient(service_address)
+    client = ReportingApiClient(service_address)
 
     metrics = [Metric[mn] for mn in metric_names]
 

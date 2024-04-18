@@ -4,6 +4,8 @@
 
 ## Upgrading
 
+* The `ReportingClient` is renamed to `ReportingApiClient`.
+
 ## New Features
 
 ## Bug Fixes
