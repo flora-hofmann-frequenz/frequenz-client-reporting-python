@@ -629,8 +629,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#frequenz.client.reporting.ReportingApiClient.iterate_single_component" class="md-nav__link">
-    iterate_single_component
+  <a href="#frequenz.client.reporting.ReportingApiClient.list_single_component_data" class="md-nav__link">
+    list_single_component_data
   </a>
   
 </li>
@@ -911,7 +911,7 @@
 </span><span id="__span-0-122"><a id="__codelineno-0-122" name="__codelineno-0-122"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_stub</span> <span class="o">=</span> <span class="n">ReportingStub</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_grpc_channel</span><span class="p">)</span>
 </span><span id="__span-0-123"><a id="__codelineno-0-123" name="__codelineno-0-123"></a>
 </span><span id="__span-0-124"><a id="__codelineno-0-124" name="__codelineno-0-124"></a>    <span class="c1"># pylint: disable=too-many-arguments</span>
-</span><span id="__span-0-125"><a id="__codelineno-0-125" name="__codelineno-0-125"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">iterate_single_component</span><span class="p">(</span>
+</span><span id="__span-0-125"><a id="__codelineno-0-125" name="__codelineno-0-125"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">list_single_component_data</span><span class="p">(</span>
 </span><span id="__span-0-126"><a id="__codelineno-0-126" name="__codelineno-0-126"></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-127"><a id="__codelineno-0-127" name="__codelineno-0-127"></a>        <span class="o">*</span><span class="p">,</span>
 </span><span id="__span-0-128"><a id="__codelineno-0-128" name="__codelineno-0-128"></a>        <span class="n">microgrid_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -936,7 +936,7 @@
 </span><span id="__span-0-147"><a id="__codelineno-0-147" name="__codelineno-0-147"></a><span class="sd">            * timestamp: The timestamp of the metric sample.</span>
 </span><span id="__span-0-148"><a id="__codelineno-0-148" name="__codelineno-0-148"></a><span class="sd">            * value: The metric value.</span>
 </span><span id="__span-0-149"><a id="__codelineno-0-149" name="__codelineno-0-149"></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="__span-0-150"><a id="__codelineno-0-150" name="__codelineno-0-150"></a>        <span class="k">async</span> <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterate_components_data_pages</span><span class="p">(</span>
+</span><span id="__span-0-150"><a id="__codelineno-0-150" name="__codelineno-0-150"></a>        <span class="k">async</span> <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list_microgrid_components_data_pages</span><span class="p">(</span>
 </span><span id="__span-0-151"><a id="__codelineno-0-151" name="__codelineno-0-151"></a>            <span class="n">microgrid_components</span><span class="o">=</span><span class="p">[(</span><span class="n">microgrid_id</span><span class="p">,</span> <span class="p">[</span><span class="n">component_id</span><span class="p">])],</span>
 </span><span id="__span-0-152"><a id="__codelineno-0-152" name="__codelineno-0-152"></a>            <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">metrics</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="n">Metric</span><span class="p">)</span> <span class="k">else</span> <span class="n">metrics</span><span class="p">,</span>
 </span><span id="__span-0-153"><a id="__codelineno-0-153" name="__codelineno-0-153"></a>            <span class="n">start_dt</span><span class="o">=</span><span class="n">start_dt</span><span class="p">,</span>
@@ -947,7 +947,7 @@
 </span><span id="__span-0-158"><a id="__codelineno-0-158" name="__codelineno-0-158"></a>                <span class="k">yield</span> <span class="n">entry</span>
 </span><span id="__span-0-159"><a id="__codelineno-0-159" name="__codelineno-0-159"></a>
 </span><span id="__span-0-160"><a id="__codelineno-0-160" name="__codelineno-0-160"></a>    <span class="c1"># pylint: disable=too-many-arguments</span>
-</span><span id="__span-0-161"><a id="__codelineno-0-161" name="__codelineno-0-161"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">_iterate_components_data_pages</span><span class="p">(</span>
+</span><span id="__span-0-161"><a id="__codelineno-0-161" name="__codelineno-0-161"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">_list_microgrid_components_data_pages</span><span class="p">(</span>
 </span><span id="__span-0-162"><a id="__codelineno-0-162" name="__codelineno-0-162"></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-163"><a id="__codelineno-0-163" name="__codelineno-0-163"></a>        <span class="o">*</span><span class="p">,</span>
 </span><span id="__span-0-164"><a id="__codelineno-0-164" name="__codelineno-0-164"></a>        <span class="n">microgrid_components</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]],</span>
@@ -1388,16 +1388,16 @@
 
 
 
-<h6 id="frequenz.client.reporting.ReportingApiClient.iterate_single_component" class="doc doc-heading">
-          <span class="doc doc-object-name doc-function-name">iterate_single_component</span>
+<h6 id="frequenz.client.reporting.ReportingApiClient.list_single_component_data" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">list_single_component_data</span>
 
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
-<a href="#frequenz.client.reporting.ReportingApiClient.iterate_single_component" class="headerlink" title="Permanent link">¤</a></h6>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">iterate_single_component</span><span class="p">(</span>
+<a href="#frequenz.client.reporting.ReportingApiClient.list_single_component_data" class="headerlink" title="Permanent link">¤</a></h6>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">list_single_component_data</span><span class="p">(</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="o">*</span><span class="p">,</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">microgrid_id</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">,</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">component_id</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">,</span>
@@ -1601,7 +1601,7 @@
 <span class="normal"><a href="#__codelineno-0-155">155</a></span>
 <span class="normal"><a href="#__codelineno-0-156">156</a></span>
 <span class="normal"><a href="#__codelineno-0-157">157</a></span>
-<span class="normal"><a href="#__codelineno-0-158">158</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-125"><a id="__codelineno-0-125" name="__codelineno-0-125"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">iterate_single_component</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-158">158</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-125"><a id="__codelineno-0-125" name="__codelineno-0-125"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">list_single_component_data</span><span class="p">(</span>
 </span><span id="__span-0-126"><a id="__codelineno-0-126" name="__codelineno-0-126"></a>    <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-127"><a id="__codelineno-0-127" name="__codelineno-0-127"></a>    <span class="o">*</span><span class="p">,</span>
 </span><span id="__span-0-128"><a id="__codelineno-0-128" name="__codelineno-0-128"></a>    <span class="n">microgrid_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -1626,7 +1626,7 @@
 </span><span id="__span-0-147"><a id="__codelineno-0-147" name="__codelineno-0-147"></a><span class="sd">        * timestamp: The timestamp of the metric sample.</span>
 </span><span id="__span-0-148"><a id="__codelineno-0-148" name="__codelineno-0-148"></a><span class="sd">        * value: The metric value.</span>
 </span><span id="__span-0-149"><a id="__codelineno-0-149" name="__codelineno-0-149"></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="__span-0-150"><a id="__codelineno-0-150" name="__codelineno-0-150"></a>    <span class="k">async</span> <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterate_components_data_pages</span><span class="p">(</span>
+</span><span id="__span-0-150"><a id="__codelineno-0-150" name="__codelineno-0-150"></a>    <span class="k">async</span> <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list_microgrid_components_data_pages</span><span class="p">(</span>
 </span><span id="__span-0-151"><a id="__codelineno-0-151" name="__codelineno-0-151"></a>        <span class="n">microgrid_components</span><span class="o">=</span><span class="p">[(</span><span class="n">microgrid_id</span><span class="p">,</span> <span class="p">[</span><span class="n">component_id</span><span class="p">])],</span>
 </span><span id="__span-0-152"><a id="__codelineno-0-152" name="__codelineno-0-152"></a>        <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">metrics</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="n">Metric</span><span class="p">)</span> <span class="k">else</span> <span class="n">metrics</span><span class="p">,</span>
 </span><span id="__span-0-153"><a id="__codelineno-0-153" name="__codelineno-0-153"></a>        <span class="n">start_dt</span><span class="o">=</span><span class="n">start_dt</span><span class="p">,</span>
