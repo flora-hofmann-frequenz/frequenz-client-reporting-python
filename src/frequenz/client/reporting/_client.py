@@ -158,6 +158,44 @@ class ReportingApiClient:
                 yield entry
 
     # pylint: disable=too-many-arguments
+    async def list_multiple_microgrid_components_data(
+        self,
+        *,
+        microgrid_components: list[tuple[int, list[int]]],
+        metrics: Metric | list[Metric],
+        start_dt: datetime,
+        end_dt: datetime,
+        page_size: int = 1000,
+    ) -> AsyncIterator[MetricSample]:
+        """Iterate over the data for multiple microgrids and components.
+
+        Args:
+            microgrid_components: List of tuples where each tuple contains
+                                  microgrid ID and corresponding component IDs.
+            metrics: The metric name or list of metric names.
+            start_dt: The start date and time.
+            end_dt: The end date and time.
+            page_size: The page size.
+
+        Yields:
+            A named tuple with the following fields:
+            * microgrid_id: The microgrid ID.
+            * component_id: The component ID.
+            * metric: The metric name.
+            * timestamp: The timestamp of the metric sample.
+            * value: The metric value.
+        """
+        async for page in self._list_microgrid_components_data_pages(
+            microgrid_components=microgrid_components,
+            metrics=[metrics] if isinstance(metrics, Metric) else metrics,
+            start_dt=start_dt,
+            end_dt=end_dt,
+            page_size=page_size,
+        ):
+            for entry in page:
+                yield entry
+
+    # pylint: disable=too-many-arguments
     async def _list_microgrid_components_data_pages(
         self,
         *,
