@@ -8,8 +8,6 @@
 
 Reporting API client for Python
 
-TODO(cookiecutter): Improve the README file
-
 ## Supported Platforms
 
 The following platforms are officially supported (tested):
