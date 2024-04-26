@@ -158,7 +158,7 @@ class ReportingApiClient:
                 yield entry
 
     # pylint: disable=too-many-arguments
-    async def list_multiple_microgrid_components_data(
+    async def list_microgrid_components_data(
         self,
         *,
         microgrid_components: list[tuple[int, list[int]]],

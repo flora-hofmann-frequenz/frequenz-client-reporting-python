@@ -10,7 +10,7 @@
 
 ## New Features
 
-* The client method `list_multiple_microgrid_components_data` is added to
+* The client method `list_microgrid_components_data` is added to
 expose the functionality of supporting arbitrary lists of microgrid-component IDs
 and metric IDs. It is intended to be as close as possible on the gRPC function call.
 
