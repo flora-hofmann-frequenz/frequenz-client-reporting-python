@@ -2,17 +2,16 @@
 
 ## Summary
 
+<!-- Here goes a general summary of what this release is about -->
+
 ## Upgrading
 
-* The `ReportingClient` is renamed to `ReportingApiClient`.
-
-* The client method `iterate_single_component` is renamed to `list_single_component_data`.
+<!-- Here goes notes on how to upgrade from previous versions, including deprecations and what they should be replaced with -->
 
 ## New Features
 
-* The client method `list_microgrid_components_data` is added to
-expose the functionality of supporting arbitrary lists of microgrid-component IDs
-and metric IDs. It is intended to be as close as possible on the gRPC function call.
+<!-- Here goes the main new features and examples or instructions on how to use them -->
 
 ## Bug Fixes
 
+<!-- Here goes notable bug fixes that are worth a special mention or explanation -->
