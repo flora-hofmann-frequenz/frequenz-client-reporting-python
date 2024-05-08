@@ -24,6 +24,9 @@ from frequenz.api.reporting.v1.reporting_pb2 import (
 from frequenz.api.reporting.v1.reporting_pb2 import (
     ListMicrogridComponentsDataResponse as PBListMicrogridComponentsDataResponse,
 )
+from frequenz.api.reporting.v1.reporting_pb2 import (
+    ResamplingOptions as PBResamplingOptions,
+)
 from frequenz.api.reporting.v1.reporting_pb2 import TimeFilter as PBTimeFilter
 from frequenz.api.reporting.v1.reporting_pb2_grpc import ReportingStub
 from frequenz.client.common.metric import Metric
@@ -130,6 +133,7 @@ class ReportingApiClient:
         metrics: Metric | list[Metric],
         start_dt: datetime,
         end_dt: datetime,
+        resolution: int | None,
         page_size: int = 1000,
     ) -> AsyncIterator[MetricSample]:
         """Iterate over the data for a single metric.
@@ -140,6 +144,7 @@ class ReportingApiClient:
             metrics: The metric name or list of metric names.
             start_dt: The start date and time.
             end_dt: The end date and time.
+            resolution: The resampling resolution for the data, represented in seconds.
             page_size: The page size.
 
         Yields:
@@ -152,6 +157,7 @@ class ReportingApiClient:
             metrics=[metrics] if isinstance(metrics, Metric) else metrics,
             start_dt=start_dt,
             end_dt=end_dt,
+            resolution=resolution,
             page_size=page_size,
         ):
             for entry in page:
@@ -165,6 +171,7 @@ class ReportingApiClient:
         metrics: Metric | list[Metric],
         start_dt: datetime,
         end_dt: datetime,
+        resolution: int | None,
         page_size: int = 1000,
     ) -> AsyncIterator[MetricSample]:
         """Iterate over the data for multiple microgrids and components.
@@ -175,6 +182,7 @@ class ReportingApiClient:
             metrics: The metric name or list of metric names.
             start_dt: The start date and time.
             end_dt: The end date and time.
+            resolution: The resampling resolution for the data, represented in seconds.
             page_size: The page size.
 
         Yields:
@@ -190,6 +198,7 @@ class ReportingApiClient:
             metrics=[metrics] if isinstance(metrics, Metric) else metrics,
             start_dt=start_dt,
             end_dt=end_dt,
+            resolution=resolution,
             page_size=page_size,
         ):
             for entry in page:
@@ -203,7 +212,8 @@ class ReportingApiClient:
         metrics: list[Metric],
         start_dt: datetime,
         end_dt: datetime,
-        page_size: int = 1000,
+        resolution: int | None,
+        page_size: int,
     ) -> AsyncIterator[ComponentsDataPage]:
         """Iterate over the pages of microgrid components data.
 
@@ -215,6 +225,7 @@ class ReportingApiClient:
             metrics: A list of metrics.
             start_dt: The start date and time.
             end_dt: The end date and time.
+            resolution: The resampling resolution for the data, represented in seconds.
             page_size: The page size.
 
         Yields:
@@ -237,6 +248,7 @@ class ReportingApiClient:
 
         list_filter = PBListMicrogridComponentsDataRequest.ListFilter(
             time_filter=time_filter,
+            resampling_options=PBResamplingOptions(resolution=resolution),
         )
 
         metrics_pb = [metric.to_proto() for metric in metrics]

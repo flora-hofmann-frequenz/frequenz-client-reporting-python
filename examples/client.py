@@ -49,6 +49,7 @@ def main() -> None:
         help="End datetime in YYYY-MM-DDTHH:MM:SS format",
         required=True,
     )
+    parser.add_argument("--resolution", type=int, help="Resolution", default=None)
     parser.add_argument("--psize", type=int, help="Page size", default=100)
     parser.add_argument(
         "--display", choices=["iter", "df", "dict"], help="Display format", default="df"
@@ -61,6 +62,7 @@ def main() -> None:
             args.metrics,
             args.start,
             args.end,
+            args.resolution,
             page_size=args.psize,
             service_address=args.url,
             display=args.display,
@@ -68,13 +70,14 @@ def main() -> None:
     )
 
 
-# pylint: disable=too-many-arguments
+# pylint: disable=too-many-arguments, too-many-locals
 async def run(
     microgrid_id: int,
     component_id: int,
     metric_names: list[str],
     start_dt: datetime,
     end_dt: datetime,
+    resolution: int,
     page_size: int,
     service_address: str,
     display: str,
@@ -87,6 +90,7 @@ async def run(
         metric_names: list of metric names
         start_dt: start datetime
         end_dt: end datetime
+        resolution: resampling resolution in sec
         page_size: page size
         service_address: service address
         display: display format
@@ -112,6 +116,7 @@ async def run(
             metrics=metrics,
             start_dt=start_dt,
             end_dt=end_dt,
+            resolution=resolution,
             page_size=page_size,
         )
 
