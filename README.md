@@ -20,3 +20,88 @@ The following platforms are officially supported (tested):
 
 If you want to know how to build this project and contribute to it, please
 check out the [Contributing Guide](CONTRIBUTING.md).
+
+
+## Usage
+
+Please also refer to [examples](https://github.com/frequenz-floss/frequenz-client-reporting-python/tree/HEAD/examples) for more detailed usage.
+
+### Installation
+
+```bash
+# Choose the version to install
+VERSION=0.2.0
+pip install frequenz-client-reporting==$VERSION
+```
+
+
+### Initialize the client
+
+```python
+from datetime import datetime
+
+from frequenz.client.common.metric import Metric
+from frequenz.client.reporting import ReportingApiClient
+
+# Change server address
+SERVICE_ADDRESS = "localhost:4711"
+client = ReportingApiClient(service_address=SERVICE_ADDRESS)
+```
+
+### Query metrics for a single microgrid and component:
+
+```python
+data = [
+    sample async for sample in
+    client.list_single_component_data(
+        microgrid_id=1,
+        component_id=100,
+        metrics=[Metric.AC_ACTIVE_POWER, Metric.AC_REACTIVE_POWER],
+        start_dt=datetime.fromisoformat("2024-05-01T00:00:00"),
+        end_dt=datetime.fromisoformat("2024-05-02T00:00:00"),
+        page_size=10000,
+    )
+]
+```
+
+
+### Query metrics for multiple microgrids and components
+
+```python
+# Set the microgrid ID and the component IDs that belong to the microgrid
+# Multiple microgrids and components can be queried at once
+microgrid_id1 = 1
+component_ids1 = [100, 101, 102]
+microgrid_id2 = 2
+component_ids2 = [200, 201, 202]
+microgrid_components = [
+    (microgrid_id1, component_ids1),
+    (microgrid_id2, component_ids2),
+]
+
+data = [
+    sample async for sample in
+    client.list_microgrid_components_data(
+        microgrid_components=microgrid_components,
+        metrics=[Metric.AC_ACTIVE_POWER, Metric.AC_REACTIVE_POWER],
+        start_dt=datetime.fromisoformat("2024-05-01T00:00:00"),
+        end_dt=datetime.fromisoformat("2024-05-02T00:00:00"),
+        page_size=10000,
+    )
+]
+```
+
+### Optionally convert the data to a pandas DataFrame
+
+```python
+import pandas as pd
+df = pd.DataFrame(data)
+print(df)
+```
+
+## Command line client example
+
+The example folder contains a simple client that can be used to query the reporting API from the command line:
+```bash
+python examples/client.py --url localhost:4711 --mid 42 --cid 23 --metrics AC_ACTIVE_POWER AC_REACTIVE_POWER --start 2024-05-01T00:00:00 --end 2024-05-02T00:00:00
+```
