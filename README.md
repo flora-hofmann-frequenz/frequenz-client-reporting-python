@@ -30,7 +30,7 @@ Please also refer to [examples](https://github.com/frequenz-floss/frequenz-clien
 
 ```bash
 # Choose the version to install
-VERSION=0.2.0
+VERSION=0.3.0
 pip install frequenz-client-reporting==$VERSION
 ```
 
@@ -60,6 +60,7 @@ data = [
         start_dt=datetime.fromisoformat("2024-05-01T00:00:00"),
         end_dt=datetime.fromisoformat("2024-05-02T00:00:00"),
         page_size=10000,
+        resolution=1,
     )
 ]
 ```
@@ -87,6 +88,7 @@ data = [
         start_dt=datetime.fromisoformat("2024-05-01T00:00:00"),
         end_dt=datetime.fromisoformat("2024-05-02T00:00:00"),
         page_size=10000,
+        resolution=1,
     )
 ]
 ```
