@@ -6,11 +6,13 @@
 
 ## Upgrading
 
-<!-- Here goes notes on how to upgrade from previous versions, including deprecations and what they should be replaced with -->
+* Upgrading "frequenz-api-reporting >= 0.1.1, < 0.2" to "frequenz-api-reporting >= 0.2.0, < 0.3"
+* Upgrading "frequenz-client-common == 0.1.0" to "frequenz-client-common >= 0.2.0, < 0.3"
 
 ## New Features
 
-<!-- Here goes the main new features and examples or instructions on how to use them -->
+* The `ReportingApiClient` exposes the resampling option of the data, with its 
+resolution represented in second and its default set to `None`.
 
 ## Bug Fixes
 
