@@ -66,41 +66,50 @@ class ComponentsDataPage:
             return True
         return False
 
-    def __iter__(self) -> Iterator[MetricSample]:
+    def __iter__(self) -> Iterator[dict[Any, Any]]:
         """Get generator that iterates over all values in the page.
 
         Note: So far only `SimpleMetricSample` in the `MetricSampleVariant`
         message is supported.
 
-
         Yields:
-            A named tuple with the following fields:
-            * timestamp: The timestamp of the metric sample.
-            * microgrid_id: The microgrid ID.
-            * component_id: The component ID.
-            * metric: The metric name.
-            * value: The metric value.
+            A dictionary containing the parsed metric samples and states.
         """
-        data = self._data_pb
-        for mdata in data.microgrids:
-            mid = mdata.microgrid_id
+        for mdata in self._data_pb.microgrids:
+            microgrid_id = mdata.microgrid_id
+            components = []
             for cdata in mdata.components:
-                cid = cdata.component_id
-                for msample in cdata.metric_samples:
-                    ts = msample.sampled_at.ToDatetime()
-                    met = Metric.from_proto(msample.metric).name
-                    value = (
-                        msample.sample.simple_metric.value
-                        if msample.sample.simple_metric
-                        else None
-                    )
-                    yield MetricSample(
-                        timestamp=ts,
-                        microgrid_id=mid,
-                        component_id=cid,
-                        metric=met,
-                        value=value,
-                    )
+                component_id = cdata.component_id
+                metric_samples = [
+                    {
+                        "timestamp": msample.sampled_at.ToDatetime().isoformat(),
+                        "metric_name": Metric.from_proto(msample.metric).name,
+                        "value": (
+                            msample.sample.simple_metric.value
+                            if msample.sample.simple_metric
+                            else None
+                        ),
+                    }
+                    for msample in cdata.metric_samples
+                ]
+                states = [
+                    {
+                        "timestamp": sdata.sampled_at.ToDatetime().isoformat(),
+                        "states": sdata.states,
+                        "errors": sdata.errors,
+                        "warnings": sdata.warnings,
+                    }
+                    for sdata in cdata.states
+                ]
+                components.append(
+                    {
+                        "component_id": component_id,
+                        "metric_samples": metric_samples,
+                        "states": states,
+                    }
+                )
+
+            yield {"microgrid_id": microgrid_id, "components": components}
 
     @property
     def next_page_token(self) -> str | None:
@@ -135,7 +144,7 @@ class ReportingApiClient:
         end_dt: datetime,
         resolution: int | None,
         page_size: int = 1000,
-    ) -> AsyncIterator[MetricSample]:
+    ) -> AsyncIterator[dict[Any, Any]]:
         """Iterate over the data for a single metric.
 
         Args:
@@ -173,7 +182,7 @@ class ReportingApiClient:
         end_dt: datetime,
         resolution: int | None,
         page_size: int = 1000,
-    ) -> AsyncIterator[MetricSample]:
+    ) -> AsyncIterator[dict[Any, Any]]:
         """Iterate over the data for multiple microgrids and components.
 
         Args:
