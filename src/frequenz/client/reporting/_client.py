@@ -90,8 +90,8 @@ class ComponentsDataPage:
                     ts = msample.sampled_at.ToDatetime()
                     met = Metric.from_proto(msample.metric).name
                     value = (
-                        msample.sample.simple_metric.value
-                        if msample.sample.simple_metric
+                        msample.value.simple_metric.value
+                        if msample.value.simple_metric
                         else None
                     )
                     yield MetricSample(
