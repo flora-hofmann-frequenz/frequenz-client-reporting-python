@@ -115,14 +115,16 @@ class ComponentsDataPage:
 class ReportingApiClient:
     """A client for the Reporting service."""
 
-    def __init__(self, service_address: str):
+    def __init__(self, service_address: str, key: str | None = None) -> None:
         """Create a new Reporting client.
 
         Args:
             service_address: The address of the Reporting service.
+            key: The API key for the authorization.
         """
         self._grpc_channel = grpcaio.insecure_channel(service_address)
         self._stub = ReportingStub(self._grpc_channel)
+        self._metadata = (("key", key),) if key else ()
 
     # pylint: disable=too-many-arguments
     async def list_single_component_data(
@@ -303,7 +305,9 @@ class ReportingApiClient:
             )
             response = await cast(
                 Awaitable[PBListMicrogridComponentsDataResponse],
-                self._stub.ListMicrogridComponentsData(request),
+                self._stub.ListMicrogridComponentsData(
+                    request, metadata=self._metadata
+                ),
             )
         except grpcaio.AioRpcError as e:
             print(f"RPC failed: {e}")

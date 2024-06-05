@@ -11,6 +11,8 @@
 
 ## New Features
 
+* An API key for authorization can now be passed to the `ReportingApiClient`.
+
 ## Bug Fixes
 
 <!-- Here goes notable bug fixes that are worth a special mention or explanation -->

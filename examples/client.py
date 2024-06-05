@@ -54,6 +54,12 @@ def main() -> None:
     parser.add_argument(
         "--display", choices=["iter", "df", "dict"], help="Display format", default="df"
     )
+    parser.add_argument(
+        "--key",
+        type=str,
+        help="API key",
+        default=None,
+    )
     args = parser.parse_args()
     asyncio.run(
         run(
@@ -65,6 +71,7 @@ def main() -> None:
             args.resolution,
             page_size=args.psize,
             service_address=args.url,
+            key=args.key,
             display=args.display,
         )
     )
@@ -80,6 +87,7 @@ async def run(
     resolution: int,
     page_size: int,
     service_address: str,
+    key: str,
     display: str,
 ) -> None:
     """Test the ReportingApiClient.
@@ -93,12 +101,13 @@ async def run(
         resolution: resampling resolution in sec
         page_size: page size
         service_address: service address
+        key: API key
         display: display format
 
     Raises:
         ValueError: if display format is invalid
     """
-    client = ReportingApiClient(service_address)
+    client = ReportingApiClient(service_address, key)
 
     metrics = [Metric[mn] for mn in metric_names]
 
