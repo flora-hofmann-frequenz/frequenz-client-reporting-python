@@ -11,9 +11,6 @@
 
 ## New Features
 
-* The `ReportingApiClient` exposes the resampling option of the data, with its 
-resolution represented in second and its default set to `None`.
-
 ## Bug Fixes
 
 <!-- Here goes notable bug fixes that are worth a special mention or explanation -->
