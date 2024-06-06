@@ -30,7 +30,7 @@ Please also refer to [examples](https://github.com/frequenz-floss/frequenz-clien
 
 ```bash
 # Choose the version to install
-VERSION=0.3.0
+VERSION=0.4.0
 pip install frequenz-client-reporting==$VERSION
 ```
 
@@ -45,7 +45,8 @@ from frequenz.client.reporting import ReportingApiClient
 
 # Change server address
 SERVICE_ADDRESS = "localhost:4711"
-client = ReportingApiClient(service_address=SERVICE_ADDRESS)
+API_KEY = open('api_key.txt').read().strip()
+client = ReportingApiClient(service_address=SERVICE_ADDRESS, key=API_KEY)
 ```
 
 ### Query metrics for a single microgrid and component:
@@ -105,5 +106,12 @@ print(df)
 
 The example folder contains a simple client that can be used to query the reporting API from the command line:
 ```bash
-python examples/client.py --url localhost:4711 --mid 42 --cid 23 --metrics AC_ACTIVE_POWER AC_REACTIVE_POWER --start 2024-05-01T00:00:00 --end 2024-05-02T00:00:00
+python examples/client.py \
+    --url localhost:4711 \
+    --key=$(<api_key.txt)
+    --mid 42 \
+    --cid 23 \
+    --metrics AC_ACTIVE_POWER AC_REACTIVE_POWER \
+    --start 2024-05-01T00:00:00 \
+    --end 2024-05-02T00:00:00
 ```
