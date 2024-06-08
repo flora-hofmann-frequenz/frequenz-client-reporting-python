@@ -66,7 +66,6 @@ def main() -> None:
             args.start,
             args.end,
             args.resolution,
-            page_size=args.psize,
             service_address=args.url,
             key=args.key,
             fmt=args.format,
@@ -82,7 +81,6 @@ async def run(
     start_dt: datetime,
     end_dt: datetime,
     resolution: int,
-    page_size: int,
     service_address: str,
     key: str,
     fmt: str,
@@ -96,7 +94,6 @@ async def run(
         start_dt: start datetime
         end_dt: end datetime
         resolution: resampling resolution in sec
-        page_size: page size
         service_address: service address
         key: API key
         fmt: output format
@@ -123,7 +120,6 @@ async def run(
             start_dt=start_dt,
             end_dt=end_dt,
             resolution=resolution,
-            page_size=page_size,
         )
 
     if fmt == "iter":
