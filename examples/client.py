@@ -50,7 +50,7 @@ def main() -> None:
         required=True,
     )
     parser.add_argument("--resolution", type=int, help="Resolution", default=None)
-    parser.add_argument("--psize", type=int, help="Page size", default=100)
+    parser.add_argument("--psize", type=int, help="Page size", default=1000)
     parser.add_argument(
         "--display", choices=["iter", "df", "dict"], help="Display format", default="df"
     )
