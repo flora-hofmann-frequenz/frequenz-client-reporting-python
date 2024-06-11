@@ -130,20 +130,17 @@ async def run(
         )
 
     if display == "iter":
-        print("########################################################")
-        print("Iterate over single metric generator")
+        # Iterate over single metric generator
         async for sample in data_iter():
             print(sample)
 
     elif display == "dict":
-        print("########################################################")
-        print("Dumping all data as a single dict")
+        # Dumping all data as a single dict
         dct = await iter_to_dict(data_iter())
         pprint(dct)
 
     elif display == "df":
-        print("########################################################")
-        print("Turn data into a pandas DataFrame")
+        # Turn data into a pandas DataFrame
         data = [cd async for cd in data_iter()]
         df = pd.DataFrame(data).set_index("timestamp")
         # Set option to display all rows
