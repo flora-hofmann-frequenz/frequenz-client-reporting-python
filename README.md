@@ -30,7 +30,7 @@ Please also refer to [examples](https://github.com/frequenz-floss/frequenz-clien
 
 ```bash
 # Choose the version to install
-VERSION=0.4.0
+VERSION=0.5.0
 pip install frequenz-client-reporting==$VERSION
 ```
 
@@ -102,16 +102,18 @@ df = pd.DataFrame(data)
 print(df)
 ```
 
-## Command line client example
+## Command line client tool
 
-The example folder contains a simple client that can be used to query the reporting API from the command line:
+The package contains a command-line tool that can be used to request data from the reporting API.
 ```bash
-python examples/client.py \
+reporting-cli \
     --url localhost:4711 \
     --key=$(<api_key.txt)
     --mid 42 \
     --cid 23 \
     --metrics AC_ACTIVE_POWER AC_REACTIVE_POWER \
     --start 2024-05-01T00:00:00 \
-    --end 2024-05-02T00:00:00
+    --end 2024-05-02T00:00:00 \
+    --format csv
 ```
+In addition to the default CSV format the data can be output as individual samples or in `dict` format.
