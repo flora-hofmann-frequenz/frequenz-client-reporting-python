@@ -36,6 +36,9 @@ dependencies = [
 ]
 dynamic = ["version"]
 
+[project.scripts]
+reporting-cli = "frequenz.client.reporting.__main__:main"
+
 [[project.authors]]
 name = "Frequenz Energy-as-a-Service GmbH"
 email = "floss@frequenz.com"

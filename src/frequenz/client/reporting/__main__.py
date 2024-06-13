@@ -9,12 +9,9 @@ from datetime import datetime
 from pprint import pprint
 from typing import AsyncIterator
 
-import pandas as pd
 from frequenz.client.common.metric import Metric
 
 from frequenz.client.reporting import ReportingApiClient
-
-# Experimental import
 from frequenz.client.reporting._client import MetricSample
 
 
@@ -52,7 +49,7 @@ def main() -> None:
     parser.add_argument("--resolution", type=int, help="Resolution", default=None)
     parser.add_argument("--psize", type=int, help="Page size", default=1000)
     parser.add_argument(
-        "--display", choices=["iter", "df", "dict"], help="Display format", default="df"
+        "--format", choices=["iter", "csv", "dict"], help="Output format", default="csv"
     )
     parser.add_argument(
         "--key",
@@ -72,7 +69,7 @@ def main() -> None:
             page_size=args.psize,
             service_address=args.url,
             key=args.key,
-            display=args.display,
+            fmt=args.format,
         )
     )
 
@@ -88,7 +85,7 @@ async def run(
     page_size: int,
     service_address: str,
     key: str,
-    display: str,
+    fmt: str,
 ) -> None:
     """Test the ReportingApiClient.
 
@@ -102,10 +99,10 @@ async def run(
         page_size: page size
         service_address: service address
         key: API key
-        display: display format
+        fmt: output format
 
     Raises:
-        ValueError: if display format is invalid
+        ValueError: if output format is invalid
     """
     client = ReportingApiClient(service_address, key)
 
@@ -129,26 +126,25 @@ async def run(
             page_size=page_size,
         )
 
-    if display == "iter":
+    if fmt == "iter":
         # Iterate over single metric generator
         async for sample in data_iter():
             print(sample)
 
-    elif display == "dict":
+    elif fmt == "dict":
         # Dumping all data as a single dict
         dct = await iter_to_dict(data_iter())
         pprint(dct)
 
-    elif display == "df":
-        # Turn data into a pandas DataFrame
-        data = [cd async for cd in data_iter()]
-        df = pd.DataFrame(data).set_index("timestamp")
-        # Set option to display all rows
-        pd.set_option("display.max_rows", None)
-        pprint(df)
+    elif fmt == "csv":
+        # Print header
+        print(",".join(MetricSample._fields))
+        # Iterate over single metric generator and format as CSV
+        async for sample in data_iter():
+            print(",".join(str(e) for e in sample))
 
     else:
-        raise ValueError(f"Invalid display format: {display}")
+        raise ValueError(f"Invalid output format: {fmt}")
 
     return
 
