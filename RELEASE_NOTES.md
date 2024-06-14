@@ -6,6 +6,8 @@
 
 ## Upgrading
 
+* The client now uses the streaming endpoint for historical data requests. The page size parameter is no longer required.
+
 ## New Features
 
 ## Bug Fixes

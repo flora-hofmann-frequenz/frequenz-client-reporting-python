@@ -8,7 +8,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from frequenz.client.reporting import ReportingApiClient
-from frequenz.client.reporting._client import ComponentsDataPage
+from frequenz.client.reporting._client import ComponentsDataBatch
 
 
 @pytest.fixture
@@ -25,19 +25,18 @@ async def test_client_initialization(mock_channel: MagicMock) -> None:
     mock_channel.assert_called_once_with("localhost:50051")
 
 
-def test_components_data_page_is_empty_true() -> None:
+def test_components_data_batch_is_empty_true() -> None:
     """Test that the is_empty method returns True when the page is empty."""
     data_pb = MagicMock()
-    data_pb.microgrids = []
-    page = ComponentsDataPage(_data_pb=data_pb)
-    assert page.is_empty() is True
+    data_pb.components = []
+    batch = ComponentsDataBatch(_data_pb=data_pb)
+    assert batch.is_empty() is True
 
 
-def test_components_data_page_is_empty_false() -> None:
+def test_components_data_batch_is_empty_false() -> None:
     """Test that the is_empty method returns False when the page is not empty."""
     data_pb = MagicMock()
-    data_pb.microgrids = [MagicMock()]
-    data_pb.microgrids[0].components = [MagicMock()]
-    data_pb.microgrids[0].components[0].metric_samples = [MagicMock()]
-    page = ComponentsDataPage(_data_pb=data_pb)
-    assert page.is_empty() is False
+    data_pb.components = [MagicMock()]
+    data_pb.components[0].metric_samples = [MagicMock()]
+    batch = ComponentsDataBatch(_data_pb=data_pb)
+    assert batch.is_empty() is False
