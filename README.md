@@ -30,7 +30,7 @@ Please also refer to [examples](https://github.com/frequenz-floss/frequenz-clien
 
 ```bash
 # Choose the version to install
-VERSION=0.5.0
+VERSION=0.6.0
 pip install frequenz-client-reporting==$VERSION
 ```
 
