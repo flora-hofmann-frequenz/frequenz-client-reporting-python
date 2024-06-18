@@ -60,7 +60,6 @@ data = [
         metrics=[Metric.AC_ACTIVE_POWER, Metric.AC_REACTIVE_POWER],
         start_dt=datetime.fromisoformat("2024-05-01T00:00:00"),
         end_dt=datetime.fromisoformat("2024-05-02T00:00:00"),
-        page_size=10000,
         resolution=1,
     )
 ]
@@ -88,7 +87,6 @@ data = [
         metrics=[Metric.AC_ACTIVE_POWER, Metric.AC_REACTIVE_POWER],
         start_dt=datetime.fromisoformat("2024-05-01T00:00:00"),
         end_dt=datetime.fromisoformat("2024-05-02T00:00:00"),
-        page_size=10000,
         resolution=1,
     )
 ]
