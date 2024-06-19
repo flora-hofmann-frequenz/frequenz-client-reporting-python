@@ -3,7 +3,7 @@
 
 """Tests for the frequenz.client.reporting package."""
 from typing import Generator
-from unittest.mock import MagicMock, patch
+from unittest.mock import ANY, MagicMock, patch
 
 import pytest
 
@@ -13,8 +13,8 @@ from frequenz.client.reporting._client import ComponentsDataBatch
 
 @pytest.fixture
 def mock_channel() -> Generator[MagicMock, None, None]:
-    """Fixture for grpc.aio.insecure_channel."""
-    with patch("grpc.aio.insecure_channel") as mock:
+    """Fixture for grpc.aio.secure_channel."""
+    with patch("grpc.aio.secure_channel") as mock:
         yield mock
 
 
@@ -22,7 +22,7 @@ def mock_channel() -> Generator[MagicMock, None, None]:
 async def test_client_initialization(mock_channel: MagicMock) -> None:
     """Test that the client initializes the channel."""
     client = ReportingApiClient("localhost:50051")  # noqa: F841
-    mock_channel.assert_called_once_with("localhost:50051")
+    mock_channel.assert_called_once_with("localhost:50051", ANY)
 
 
 def test_components_data_batch_is_empty_true() -> None:
