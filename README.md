@@ -29,7 +29,7 @@ Please also refer to [examples](https://github.com/frequenz-floss/frequenz-clien
 ### Installation
 
 ```bash
-# Choose the version to install
+# Choose the version you want to install
 VERSION=0.6.0
 pip install frequenz-client-reporting==$VERSION
 ```
@@ -43,8 +43,8 @@ from datetime import datetime
 from frequenz.client.common.metric import Metric
 from frequenz.client.reporting import ReportingApiClient
 
-# Change server address
-SERVICE_ADDRESS = "localhost:4711"
+# Change server address if needed
+SERVICE_ADDRESS = "reporting.api.frequenz.com:443"
 API_KEY = open('api_key.txt').read().strip()
 client = ReportingApiClient(service_address=SERVICE_ADDRESS, key=API_KEY)
 ```
