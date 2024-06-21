@@ -49,6 +49,10 @@ API_KEY = open('api_key.txt').read().strip()
 client = ReportingApiClient(service_address=SERVICE_ADDRESS, key=API_KEY)
 ```
 
+Besides the microgrid_id, component_ids, and metrics, start, and end time,
+you can also set the sampling period for resampling using the `resolution` parameter.
+For example, to resample data every 15 minutes, use a `resolution` of 900 seconds. The default is 1 second.
+
 ### Query metrics for a single microgrid and component:
 
 ```python
