@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, cast
 
+import grpc
 import grpc.aio as grpcaio
 
 # pylint: disable=no-name-in-module
@@ -107,7 +108,9 @@ class ReportingApiClient:
             service_address: The address of the Reporting service.
             key: The API key for the authorization.
         """
-        self._grpc_channel = grpcaio.insecure_channel(service_address)
+        self._grpc_channel = grpcaio.secure_channel(
+            service_address, grpc.ssl_channel_credentials()
+        )
         self._stub = ReportingStub(self._grpc_channel)
         self._metadata = (("key", key),) if key else ()
 
