@@ -2,27 +2,25 @@
 # Copyright © 2024 Frequenz Energy-as-a-Service GmbH
 
 """Tests for the frequenz.client.reporting package."""
-from typing import Generator
-from unittest.mock import ANY, MagicMock, patch
+from unittest.mock import MagicMock, patch
 
+import grpc.aio as grpcaio
 import pytest
+from frequenz.api.reporting.v1.reporting_pb2_grpc import ReportingStub
+from frequenz.client.base.client import BaseApiClient
 
 from frequenz.client.reporting import ReportingApiClient
 from frequenz.client.reporting._client import ComponentsDataBatch
 
 
-@pytest.fixture
-def mock_channel() -> Generator[MagicMock, None, None]:
-    """Fixture for grpc.aio.secure_channel."""
-    with patch("grpc.aio.secure_channel") as mock:
-        yield mock
-
-
 @pytest.mark.asyncio
-async def test_client_initialization(mock_channel: MagicMock) -> None:
-    """Test that the client initializes the channel."""
-    client = ReportingApiClient("localhost:50051")  # noqa: F841
-    mock_channel.assert_called_once_with("localhost:50051", ANY)
+async def test_client_initialization() -> None:
+    """Test that the client initializes the BaseApiClient with grpcaio.Channel."""
+    with patch.object(BaseApiClient, "__init__", return_value=None) as mock_base_init:
+        client = ReportingApiClient("gprc://localhost:50051")  # noqa: F841
+        mock_base_init.assert_called_once_with(
+            "gprc://localhost:50051", ReportingStub, grpcaio.Channel
+        )
 
 
 def test_components_data_batch_is_empty_true() -> None:

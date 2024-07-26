@@ -7,9 +7,8 @@ from collections import namedtuple
 from collections.abc import AsyncIterator, Iterator
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, cast
+from typing import cast
 
-import grpc
 import grpc.aio as grpcaio
 
 # pylint: disable=no-name-in-module
@@ -27,10 +26,9 @@ from frequenz.api.reporting.v1.reporting_pb2 import (
 )
 from frequenz.api.reporting.v1.reporting_pb2 import TimeFilter as PBTimeFilter
 from frequenz.api.reporting.v1.reporting_pb2_grpc import ReportingStub
+from frequenz.client.base.client import BaseApiClient
 from frequenz.client.common.metric import Metric
 from google.protobuf.timestamp_pb2 import Timestamp as PBTimestamp
-
-# pylint: enable=no-name-in-module
 
 MetricSample = namedtuple(
     "MetricSample", ["timestamp", "microgrid_id", "component_id", "metric", "value"]
@@ -98,20 +96,18 @@ class ComponentsDataBatch:
                 )
 
 
-class ReportingApiClient:
+class ReportingApiClient(BaseApiClient[ReportingStub, grpcaio.Channel]):
     """A client for the Reporting service."""
 
-    def __init__(self, service_address: str, key: str | None = None) -> None:
+    def __init__(self, server_url: str, key: str | None = None) -> None:
         """Create a new Reporting client.
 
         Args:
-            service_address: The address of the Reporting service.
+            server_url: The URL of the Reporting service.
             key: The API key for the authorization.
         """
-        self._grpc_channel = grpcaio.secure_channel(
-            service_address, grpc.ssl_channel_credentials()
-        )
-        self._stub = ReportingStub(self._grpc_channel)
+        super().__init__(server_url, ReportingStub, grpcaio.Channel)
+
         self._metadata = (("key", key),) if key else ()
 
     # pylint: disable=too-many-arguments
@@ -244,48 +240,15 @@ class ReportingApiClient:
         try:
             stream = cast(
                 AsyncIterator[PBReceiveMicrogridComponentsDataStreamResponse],
-                self._stub.ReceiveMicrogridComponentsDataStream(
+                self.stub.ReceiveMicrogridComponentsDataStream(
                     request, metadata=self._metadata
                 ),
             )
-            # grpc.aio is missing types and mypy thinks this is not
-            # async iterable, but it is.
             async for response in stream:
                 if not response:
                     break
-
                 yield ComponentsDataBatch(response)
 
         except grpcaio.AioRpcError as e:
             print(f"RPC failed: {e}")
             return
-
-    async def close(self) -> None:
-        """Close the client and cancel any pending requests immediately."""
-        await self._grpc_channel.close(grace=None)
-
-    async def __aenter__(self) -> "ReportingApiClient":
-        """Enter the async context."""
-        return self
-
-    async def __aexit__(
-        self,
-        _exc_type: type[BaseException] | None,
-        _exc_val: BaseException | None,
-        _exc_tb: Any | None,
-    ) -> bool | None:
-        """
-        Exit the asynchronous context manager.
-
-        Note that exceptions are not handled here, but are allowed to propagate.
-
-        Args:
-            _exc_type: Type of exception raised in the async context.
-            _exc_val: Exception instance raised.
-            _exc_tb: Traceback object at the point where the exception occurred.
-
-        Returns:
-            None, allowing any exceptions to propagate.
-        """
-        await self.close()
-        return None
