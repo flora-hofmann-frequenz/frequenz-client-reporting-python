@@ -10,7 +10,7 @@
 
 ## New Features
 
-* Integration of the base client v0.5
+* Helper function to calculate energy metrics
 
 ## Bug Fixes
 
