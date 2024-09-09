@@ -6,7 +6,7 @@
 
 ## Upgrading
 
-* Update readme to make use of newest release version 0.8.0
+* Update and fix readme to make use of newest release version 0.8.0
 
 ## New Features
 
