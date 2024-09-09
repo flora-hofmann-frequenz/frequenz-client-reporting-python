@@ -44,9 +44,9 @@ from frequenz.client.common.metric import Metric
 from frequenz.client.reporting import ReportingApiClient
 
 # Change server address if needed
-SERVICE_URL = "grpc://reporting.api.frequenz.com:443?ssl=true"
+SERVER_URL = "grpc://reporting.api.frequenz.com:443?ssl=true"
 API_KEY = open('api_key.txt').read().strip()
-client = ReportingApiClient(service_url=SERVICE_URL, key=API_KEY)
+client = ReportingApiClient(server_url=SERVER_URL, key=API_KEY)
 ```
 
 Besides the microgrid_id, component_ids, and metrics, start, and end time,
