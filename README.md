@@ -30,7 +30,7 @@ Please also refer to [examples](https://github.com/frequenz-floss/frequenz-clien
 
 ```bash
 # Choose the version you want to install
-VERSION=0.7.0
+VERSION=0.8.0
 pip install frequenz-client-reporting==$VERSION
 ```
 
@@ -44,9 +44,9 @@ from frequenz.client.common.metric import Metric
 from frequenz.client.reporting import ReportingApiClient
 
 # Change server address if needed
-SERVICE_ADDRESS = "reporting.api.frequenz.com:443"
+SERVER_URL = "grpc://reporting.api.frequenz.com:443?ssl=true"
 API_KEY = open('api_key.txt').read().strip()
-client = ReportingApiClient(service_address=SERVICE_ADDRESS, key=API_KEY)
+client = ReportingApiClient(server_url=SERVER_URL, key=API_KEY)
 ```
 
 Besides the microgrid_id, component_ids, and metrics, start, and end time,
