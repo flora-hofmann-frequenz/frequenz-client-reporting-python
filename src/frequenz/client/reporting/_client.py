@@ -224,7 +224,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub, grpcaio.Channel]):
             end=dt2ts(end_dt),
         )
 
-        list_filter = PBReceiveMicrogridComponentsDataStreamRequest.StreamFilter(
+        stream_filter = PBReceiveMicrogridComponentsDataStreamRequest.StreamFilter(
             time_filter=time_filter,
             resampling_options=PBResamplingOptions(resolution=resolution),
         )
@@ -234,7 +234,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub, grpcaio.Channel]):
         request = PBReceiveMicrogridComponentsDataStreamRequest(
             microgrid_components=microgrid_components_pb,
             metrics=metrics_pb,
-            filter=list_filter,
+            filter=stream_filter,
         )
 
         try:
