@@ -35,6 +35,11 @@ def main() -> None:
         required=True,
     )
     parser.add_argument(
+        "--states",
+        action="store_true",
+        help="Include states in the output",
+    )
+    parser.add_argument(
         "--start",
         type=datetime.fromisoformat,
         help="Start datetime in YYYY-MM-DDTHH:MM:SS format",
@@ -66,6 +71,7 @@ def main() -> None:
             args.start,
             args.end,
             args.resolution,
+            states=args.states,
             service_address=args.url,
             key=args.key,
             fmt=args.format,
@@ -81,6 +87,7 @@ async def run(
     start_dt: datetime,
     end_dt: datetime,
     resolution: int,
+    states: bool,
     service_address: str,
     key: str,
     fmt: str,
@@ -94,6 +101,7 @@ async def run(
         start_dt: start datetime
         end_dt: end datetime
         resolution: resampling resolution in sec
+        states: include states in the output
         service_address: service address
         key: API key
         fmt: output format
@@ -120,6 +128,7 @@ async def run(
             start_dt=start_dt,
             end_dt=end_dt,
             resolution=resolution,
+            include_states=states,
         )
 
     if fmt == "iter":
