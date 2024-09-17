@@ -10,7 +10,11 @@
 
 ## New Features
 
-<!-- Here goes the main new features and examples or instructions on how to use them -->
+* States can now be requested via the client and are provided through the flat iterator.
+  They can be identified via their category `state`, `warning` and `error`, respectively.
+  Each individual state is provided as its own sample.
+
+* Support for states is also added to the CLI tool via the `--states` flag.
 
 ## Bug Fixes
 

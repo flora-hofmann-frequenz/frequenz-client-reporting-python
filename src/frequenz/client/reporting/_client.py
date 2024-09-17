@@ -4,7 +4,7 @@
 """Client for requests to the Reporting API."""
 
 from collections import namedtuple
-from collections.abc import AsyncIterator, Iterator
+from collections.abc import AsyncIterator, Iterable, Iterator
 from dataclasses import dataclass
 from datetime import datetime
 from typing import cast
@@ -15,6 +15,7 @@ import grpc.aio as grpcaio
 from frequenz.api.common.v1.microgrid.microgrid_pb2 import (
     MicrogridComponentIDs as PBMicrogridComponentIDs,
 )
+from frequenz.api.reporting.v1.reporting_pb2 import IncludeOptions as PBIncludeOptions
 from frequenz.api.reporting.v1.reporting_pb2 import (
     ReceiveMicrogridComponentsDataStreamRequest as PBReceiveMicrogridComponentsDataStreamRequest,
 )
@@ -56,7 +57,10 @@ class ComponentsDataBatch:
         """
         if not self._data_pb.components:
             return True
-        if not self._data_pb.components[0].metric_samples:
+        if (
+            not self._data_pb.components[0].metric_samples
+            and not self._data_pb.components[0].states
+        ):
             return True
         return False
 
@@ -94,6 +98,26 @@ class ComponentsDataBatch:
                     metric=met,
                     value=value,
                 )
+            for state in cdata.states:
+                ts = state.sampled_at.ToDatetime()
+                for name, category in {
+                    "state": state.states,
+                    "warning": state.warnings,
+                    "error": state.errors,
+                }.items():
+                    # Skip if the category is not present
+                    if not isinstance(category, Iterable):
+                        continue
+                    # Each category can have multiple states
+                    # that are provided as individual samples
+                    for s in category:
+                        yield MetricSample(
+                            timestamp=ts,
+                            microgrid_id=mid,
+                            component_id=cid,
+                            metric=name,
+                            value=s,
+                        )
 
 
 class ReportingApiClient(BaseApiClient[ReportingStub, grpcaio.Channel]):
@@ -120,6 +144,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub, grpcaio.Channel]):
         start_dt: datetime,
         end_dt: datetime,
         resolution: int | None,
+        include_states: bool = False,
     ) -> AsyncIterator[MetricSample]:
         """Iterate over the data for a single metric.
 
@@ -130,6 +155,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub, grpcaio.Channel]):
             start_dt: The start date and time.
             end_dt: The end date and time.
             resolution: The resampling resolution for the data, represented in seconds.
+            include_states: Whether to include the state data.
 
         Yields:
             A named tuple with the following fields:
@@ -142,6 +168,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub, grpcaio.Channel]):
             start_dt=start_dt,
             end_dt=end_dt,
             resolution=resolution,
+            include_states=include_states,
         ):
             for entry in batch:
                 yield entry
@@ -155,6 +182,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub, grpcaio.Channel]):
         start_dt: datetime,
         end_dt: datetime,
         resolution: int | None,
+        include_states: bool = False,
     ) -> AsyncIterator[MetricSample]:
         """Iterate over the data for multiple microgrids and components.
 
@@ -165,6 +193,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub, grpcaio.Channel]):
             start_dt: The start date and time.
             end_dt: The end date and time.
             resolution: The resampling resolution for the data, represented in seconds.
+            include_states: Whether to include the state data.
 
         Yields:
             A named tuple with the following fields:
@@ -180,11 +209,13 @@ class ReportingApiClient(BaseApiClient[ReportingStub, grpcaio.Channel]):
             start_dt=start_dt,
             end_dt=end_dt,
             resolution=resolution,
+            include_states=include_states,
         ):
             for entry in batch:
                 yield entry
 
     # pylint: disable=too-many-arguments
+    # pylint: disable=too-many-locals
     async def _list_microgrid_components_data_batch(
         self,
         *,
@@ -193,6 +224,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub, grpcaio.Channel]):
         start_dt: datetime,
         end_dt: datetime,
         resolution: int | None,
+        include_states: bool = False,
     ) -> AsyncIterator[ComponentsDataBatch]:
         """Iterate over the component data batches in the stream.
 
@@ -205,6 +237,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub, grpcaio.Channel]):
             start_dt: The start date and time.
             end_dt: The end date and time.
             resolution: The resampling resolution for the data, represented in seconds.
+            include_states: Whether to include the state data.
 
         Yields:
             A ComponentsDataBatch object of microgrid components data.
@@ -224,9 +257,19 @@ class ReportingApiClient(BaseApiClient[ReportingStub, grpcaio.Channel]):
             end=dt2ts(end_dt),
         )
 
-        list_filter = PBReceiveMicrogridComponentsDataStreamRequest.StreamFilter(
+        incl_states = (
+            PBIncludeOptions.FilterOption.FILTER_OPTION_INCLUDE
+            if include_states
+            else PBIncludeOptions.FilterOption.FILTER_OPTION_EXCLUDE
+        )
+        include_options = PBIncludeOptions(
+            states=incl_states,
+        )
+
+        stream_filter = PBReceiveMicrogridComponentsDataStreamRequest.StreamFilter(
             time_filter=time_filter,
             resampling_options=PBResamplingOptions(resolution=resolution),
+            include_options=include_options,
         )
 
         metrics_pb = [metric.to_proto() for metric in metrics]
@@ -234,7 +277,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub, grpcaio.Channel]):
         request = PBReceiveMicrogridComponentsDataStreamRequest(
             microgrid_components=microgrid_components_pb,
             metrics=metrics_pb,
-            filter=list_filter,
+            filter=stream_filter,
         )
 
         try:
