@@ -13,8 +13,11 @@
 * States can now be requested via the client and are provided through the flat iterator.
   They can be identified via their category `state`, `warning` and `error`, respectively.
   Each individual state is provided as its own sample.
+* Bounds can now be requested via the client and are provided through the flat iterator.
+  They can be identified via their category `metric_bound[i]_{upper,lower}`.
+  Each individual bound is provided as its own sample.
 
-* Support for states is also added to the CLI tool via the `--states` flag.
+* Support for states and bound is also added to the CLI tool via the `--states` and `--bounds` flag, respectively.
 
 ## Bug Fixes
 
