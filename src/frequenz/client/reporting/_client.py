@@ -137,7 +137,7 @@ class ComponentsDataBatch:
                         )
 
 
-class ReportingApiClient(BaseApiClient[ReportingStub, grpcaio.Channel]):
+class ReportingApiClient(BaseApiClient[ReportingStub]):
     """A client for the Reporting service."""
 
     def __init__(self, server_url: str, key: str | None = None) -> None:
@@ -147,7 +147,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub, grpcaio.Channel]):
             server_url: The URL of the Reporting service.
             key: The API key for the authorization.
         """
-        super().__init__(server_url, ReportingStub, grpcaio.Channel)
+        super().__init__(server_url, ReportingStub)
 
         self._metadata = (("key", key),) if key else ()
 
