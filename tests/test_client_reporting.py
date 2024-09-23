@@ -4,7 +4,6 @@
 """Tests for the frequenz.client.reporting package."""
 from unittest.mock import MagicMock, patch
 
-import grpc.aio as grpcaio
 import pytest
 from frequenz.api.reporting.v1.reporting_pb2_grpc import ReportingStub
 from frequenz.client.base.client import BaseApiClient
@@ -15,12 +14,10 @@ from frequenz.client.reporting._client import ComponentsDataBatch
 
 @pytest.mark.asyncio
 async def test_client_initialization() -> None:
-    """Test that the client initializes the BaseApiClient with grpcaio.Channel."""
+    """Test that the client initializes the BaseApiClient."""
     with patch.object(BaseApiClient, "__init__", return_value=None) as mock_base_init:
         client = ReportingApiClient("gprc://localhost:50051")  # noqa: F841
-        mock_base_init.assert_called_once_with(
-            "gprc://localhost:50051", ReportingStub, grpcaio.Channel
-        )
+        mock_base_init.assert_called_once_with("gprc://localhost:50051", ReportingStub)
 
 
 def test_components_data_batch_is_empty_true() -> None:

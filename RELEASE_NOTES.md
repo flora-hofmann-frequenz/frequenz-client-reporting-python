@@ -7,6 +7,7 @@
 ## Upgrading
 
 * Update and fix readme to make use of newest release version 0.8.0
+* Updates the base client to version 0.6.
 
 ## New Features
 
