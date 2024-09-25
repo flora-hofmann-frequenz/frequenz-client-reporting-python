@@ -30,7 +30,7 @@ Please also refer to [examples](https://github.com/frequenz-floss/frequenz-clien
 
 ```bash
 # Choose the version you want to install
-VERSION=0.8.0
+VERSION=0.9.0
 pip install frequenz-client-reporting==$VERSION
 ```
 
@@ -92,6 +92,8 @@ data = [
         start_dt=datetime.fromisoformat("2024-05-01T00:00:00"),
         end_dt=datetime.fromisoformat("2024-05-02T00:00:00"),
         resolution=1,
+        states=False, # Set to True to include state data
+        bounds=False, # Set to True to include metric bounds data
     )
 ]
 ```
@@ -116,6 +118,8 @@ reporting-cli \
     --metrics AC_ACTIVE_POWER AC_REACTIVE_POWER \
     --start 2024-05-01T00:00:00 \
     --end 2024-05-02T00:00:00 \
-    --format csv
+    --format csv \
+    --states \
+    --bounds
 ```
 In addition to the default CSV format the data can be output as individual samples or in `dict` format.
