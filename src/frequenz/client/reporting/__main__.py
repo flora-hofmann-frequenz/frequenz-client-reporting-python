@@ -70,12 +70,12 @@ def main() -> None:
     args = parser.parse_args()
     asyncio.run(
         run(
-            args.mid,
-            args.cid,
-            args.metrics,
-            args.start,
-            args.end,
-            args.resolution,
+            microgrid_id=args.mid,
+            component_id=args.cid,
+            metric_names=args.metrics,
+            start_dt=args.start,
+            end_dt=args.end,
+            resolution=args.resolution,
             states=args.states,
             bounds=args.bounds,
             service_address=args.url,
@@ -87,6 +87,7 @@ def main() -> None:
 
 # pylint: disable=too-many-arguments, too-many-locals
 async def run(
+    *,
     microgrid_id: int,
     component_id: int,
     metric_names: list[str],
