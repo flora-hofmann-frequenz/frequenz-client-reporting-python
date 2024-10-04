@@ -6,6 +6,7 @@
 
 ## Upgrading
 
+* Enforce keyword arguments in 'run' function of 'main' module
 
 ## New Features
 
