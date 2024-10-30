@@ -50,8 +50,9 @@ client = ReportingApiClient(server_url=SERVER_URL, key=API_KEY)
 ```
 
 Besides the microgrid_id, component_ids, and metrics, start, and end time,
-you can also set the sampling period for resampling using the `resolution` parameter.
-For example, to resample data every 15 minutes, use a `resolution` of 900 seconds. The default is 1 second.
+you can also set the sampling period for resampling using the `resampling_period`
+parameter. For example, to resample data every 15 minutes, use a `resampling_period`
+of timedelta(minutes=15).
 
 ### Query metrics for a single microgrid and component:
 
@@ -64,7 +65,7 @@ data = [
         metrics=[Metric.AC_ACTIVE_POWER, Metric.AC_REACTIVE_POWER],
         start_dt=datetime.fromisoformat("2024-05-01T00:00:00"),
         end_dt=datetime.fromisoformat("2024-05-02T00:00:00"),
-        resolution=1,
+        resampling_period=timedelta(seconds=1),
     )
 ]
 ```
@@ -91,7 +92,7 @@ data = [
         metrics=[Metric.AC_ACTIVE_POWER, Metric.AC_REACTIVE_POWER],
         start_dt=datetime.fromisoformat("2024-05-01T00:00:00"),
         end_dt=datetime.fromisoformat("2024-05-02T00:00:00"),
-        resolution=1,
+        resampling_period=timedelta(seconds=1),
         states=False, # Set to True to include state data
         bounds=False, # Set to True to include metric bounds data
     )

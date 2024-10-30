@@ -6,7 +6,7 @@
 from collections import namedtuple
 from collections.abc import AsyncIterator, Iterable, Iterator
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import cast
 
 import grpc.aio as grpcaio
@@ -160,7 +160,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub]):
         metrics: Metric | list[Metric],
         start_dt: datetime,
         end_dt: datetime,
-        resolution: int | None,
+        resampling_period: timedelta | None,
         include_states: bool = False,
         include_bounds: bool = False,
     ) -> AsyncIterator[MetricSample]:
@@ -172,7 +172,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub]):
             metrics: The metric name or list of metric names.
             start_dt: The start date and time.
             end_dt: The end date and time.
-            resolution: The resampling resolution for the data, represented in seconds.
+            resampling_period: The period for resampling the data.
             include_states: Whether to include the state data.
             include_bounds: Whether to include the bound data.
 
@@ -186,7 +186,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub]):
             metrics=[metrics] if isinstance(metrics, Metric) else metrics,
             start_dt=start_dt,
             end_dt=end_dt,
-            resolution=resolution,
+            resampling_period=resampling_period,
             include_states=include_states,
             include_bounds=include_bounds,
         ):
@@ -201,7 +201,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub]):
         metrics: Metric | list[Metric],
         start_dt: datetime,
         end_dt: datetime,
-        resolution: int | None,
+        resampling_period: timedelta | None,
         include_states: bool = False,
         include_bounds: bool = False,
     ) -> AsyncIterator[MetricSample]:
@@ -213,7 +213,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub]):
             metrics: The metric name or list of metric names.
             start_dt: The start date and time.
             end_dt: The end date and time.
-            resolution: The resampling resolution for the data, represented in seconds.
+            resampling_period: The period for resampling the data.
             include_states: Whether to include the state data.
             include_bounds: Whether to include the bound data.
 
@@ -230,7 +230,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub]):
             metrics=[metrics] if isinstance(metrics, Metric) else metrics,
             start_dt=start_dt,
             end_dt=end_dt,
-            resolution=resolution,
+            resampling_period=resampling_period,
             include_states=include_states,
             include_bounds=include_bounds,
         ):
@@ -246,7 +246,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub]):
         metrics: list[Metric],
         start_dt: datetime,
         end_dt: datetime,
-        resolution: int | None,
+        resampling_period: timedelta | None,
         include_states: bool = False,
         include_bounds: bool = False,
     ) -> AsyncIterator[ComponentsDataBatch]:
@@ -260,7 +260,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub]):
             metrics: A list of metrics.
             start_dt: The start date and time.
             end_dt: The end date and time.
-            resolution: The resampling resolution for the data, represented in seconds.
+            resampling_period: The period for resampling the data.
             include_states: Whether to include the state data.
             include_bounds: Whether to include the bound data.
 
@@ -299,7 +299,13 @@ class ReportingApiClient(BaseApiClient[ReportingStub]):
 
         stream_filter = PBReceiveMicrogridComponentsDataStreamRequest.StreamFilter(
             time_filter=time_filter,
-            resampling_options=PBResamplingOptions(resolution=resolution),
+            resampling_options=PBResamplingOptions(
+                resolution=(
+                    round(resampling_period.total_seconds())
+                    if resampling_period is not None
+                    else None
+                )
+            ),
             include_options=include_options,
         )
 
