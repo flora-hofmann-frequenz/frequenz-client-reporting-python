@@ -29,10 +29,11 @@ def main() -> None:
     parser.add_argument(
         "--metrics",
         type=str,
-        nargs="+",
+        nargs="*",
         choices=[e.name for e in Metric],
         help="List of metrics to process",
-        required=True,
+        required=False,
+        default=[],
     )
     parser.add_argument(
         "--states",
