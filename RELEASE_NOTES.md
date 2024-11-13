@@ -10,6 +10,7 @@
 
 ## New Features
 
+* The CLI tool supports requesting component states without metrics.
 
 ## Bug Fixes
 
