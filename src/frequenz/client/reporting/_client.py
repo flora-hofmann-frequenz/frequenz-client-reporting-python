@@ -28,6 +28,7 @@ from frequenz.api.reporting.v1.reporting_pb2 import (
 from frequenz.api.reporting.v1.reporting_pb2 import TimeFilter as PBTimeFilter
 from frequenz.api.reporting.v1.reporting_pb2_grpc import ReportingStub
 from frequenz.client.base.client import BaseApiClient
+from frequenz.client.base.exception import ClientNotConnected
 from frequenz.client.common.metric import Metric
 from google.protobuf.timestamp_pb2 import Timestamp as PBTimestamp
 
@@ -150,6 +151,13 @@ class ReportingApiClient(BaseApiClient[ReportingStub]):
         super().__init__(server_url, ReportingStub)
 
         self._metadata = (("key", key),) if key else ()
+
+    @property
+    def stub(self) -> ReportingStub:
+        """The gRPC stub for the API."""
+        if self.channel is None or self._stub is None:
+            raise ClientNotConnected(server_url=self.server_url, operation="stub")
+        return self._stub
 
     # pylint: disable=too-many-arguments
     async def list_single_component_data(
