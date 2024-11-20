@@ -6,12 +6,11 @@
 
 ## Upgrading
 
-* Enforce keyword arguments in 'run' function of 'main' module
-* Change 'resolution' 'int' to 'resample_period' 'timedelta'
+<!-- Here goes notes on how to upgrade from previous versions, including deprecations and what they should be replaced with -->
 
 ## New Features
 
-* The CLI tool supports requesting component states without metrics.
+<!-- Here goes the main new features and examples or instructions on how to use them -->
 
 ## Bug Fixes
 
