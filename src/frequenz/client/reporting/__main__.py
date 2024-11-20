@@ -5,7 +5,7 @@
 
 import argparse
 import asyncio
-from datetime import datetime
+from datetime import datetime, timedelta
 from pprint import pprint
 from typing import AsyncIterator
 
@@ -57,7 +57,12 @@ def main() -> None:
         help="End datetime in YYYY-MM-DDTHH:MM:SS format",
         required=True,
     )
-    parser.add_argument("--resolution", type=int, help="Resolution", default=None)
+    parser.add_argument(
+        "--resampling_period_s",
+        type=int,
+        help="Resampling period in seconds (integer, rounded to avoid subsecond precision issues).",
+        default=None,
+    )
     parser.add_argument("--psize", type=int, help="Page size", default=1000)
     parser.add_argument(
         "--format", choices=["iter", "csv", "dict"], help="Output format", default="csv"
@@ -76,7 +81,7 @@ def main() -> None:
             metric_names=args.metrics,
             start_dt=args.start,
             end_dt=args.end,
-            resolution=args.resolution,
+            resampling_period_s=args.resampling_period_s,
             states=args.states,
             bounds=args.bounds,
             service_address=args.url,
@@ -94,7 +99,7 @@ async def run(
     metric_names: list[str],
     start_dt: datetime,
     end_dt: datetime,
-    resolution: int,
+    resampling_period_s: int | None,
     states: bool,
     bounds: bool,
     service_address: str,
@@ -109,7 +114,7 @@ async def run(
         metric_names: list of metric names
         start_dt: start datetime
         end_dt: end datetime
-        resolution: resampling resolution in sec
+        resampling_period_s: The period for resampling the data.
         states: include states in the output
         bounds: include bounds in the output
         service_address: service address
@@ -131,13 +136,19 @@ async def run(
         Returns:
             Iterator over single metric samples
         """
+        resampling_period = (
+            timedelta(seconds=resampling_period_s)
+            if resampling_period_s is not None
+            else None
+        )
+
         return client.list_single_component_data(
             microgrid_id=microgrid_id,
             component_id=component_id,
             metrics=metrics,
             start_dt=start_dt,
             end_dt=end_dt,
-            resolution=resolution,
+            resampling_period=resampling_period,
             include_states=states,
             include_bounds=bounds,
         )
