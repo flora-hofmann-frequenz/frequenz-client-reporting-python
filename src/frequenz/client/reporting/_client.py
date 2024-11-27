@@ -17,6 +17,9 @@ from frequenz.api.common.v1.microgrid.microgrid_pb2 import (
 )
 from frequenz.api.reporting.v1.reporting_pb2 import IncludeOptions as PBIncludeOptions
 from frequenz.api.reporting.v1.reporting_pb2 import (
+    MetricConnections as PBMetricConnections,
+)
+from frequenz.api.reporting.v1.reporting_pb2 import (
     ReceiveMicrogridComponentsDataStreamRequest as PBReceiveMicrogridComponentsDataStreamRequest,
 )
 from frequenz.api.reporting.v1.reporting_pb2 import (
@@ -65,6 +68,7 @@ class ComponentsDataBatch:
             return True
         return False
 
+    # pylint: disable=too-many-locals
     def __iter__(self) -> Iterator[MetricSample]:
         """Get generator that iterates over all values in the batch.
 
@@ -317,11 +321,17 @@ class ReportingApiClient(BaseApiClient[ReportingStub]):
             include_options=include_options,
         )
 
-        metrics_pb = [metric.to_proto() for metric in metrics]
+        metric_conns_pb = [
+            PBMetricConnections(
+                metric=metric.to_proto(),
+                connections=[],
+            )
+            for metric in metrics
+        ]
 
         request = PBReceiveMicrogridComponentsDataStreamRequest(
             microgrid_components=microgrid_components_pb,
-            metrics=metrics_pb,
+            metrics=metric_conns_pb,
             filter=stream_filter,
         )
 
