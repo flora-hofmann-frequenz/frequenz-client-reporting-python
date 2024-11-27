@@ -49,13 +49,15 @@ def main() -> None:
         "--start",
         type=datetime.fromisoformat,
         help="Start datetime in YYYY-MM-DDTHH:MM:SS format",
-        required=True,
+        required=False,
+        default=None,
     )
     parser.add_argument(
         "--end",
         type=datetime.fromisoformat,
         help="End datetime in YYYY-MM-DDTHH:MM:SS format",
-        required=True,
+        required=False,
+        default=None,
     )
     parser.add_argument(
         "--resampling_period_s",
@@ -97,8 +99,8 @@ async def run(
     microgrid_id: int,
     component_id: int,
     metric_names: list[str],
-    start_dt: datetime,
-    end_dt: datetime,
+    start_dt: datetime | None,
+    end_dt: datetime | None,
     resampling_period_s: int | None,
     states: bool,
     bounds: bool,
@@ -112,8 +114,8 @@ async def run(
         microgrid_id: microgrid ID
         component_id: component ID
         metric_names: list of metric names
-        start_dt: start datetime
-        end_dt: end datetime
+        start_dt: start datetime, if None, the earliest available data will be used
+        end_dt: end datetime, if None starts streaming indefinitely from start_dt
         resampling_period_s: The period for resampling the data.
         states: include states in the output
         bounds: include bounds in the output
