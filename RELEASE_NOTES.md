@@ -10,7 +10,11 @@
 
 ## New Features
 
-<!-- Here goes the main new features and examples or instructions on how to use them -->
+* Support for streaming: By omitting the end date in the request,
+  the client will return any historical data from timestamp until now and
+  keep streaming new data as it arrives.
+* Also the start date can be omitted which let's the data start at the
+  earliest time stamp that is available.
 
 ## Bug Fixes
 
