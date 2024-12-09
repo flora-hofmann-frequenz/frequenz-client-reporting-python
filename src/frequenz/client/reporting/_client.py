@@ -6,7 +6,7 @@
 from collections import namedtuple
 from collections.abc import AsyncIterator, Iterable, Iterator
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import cast
 
 import grpc.aio as grpcaio
@@ -90,6 +90,9 @@ class ComponentsDataBatch:
             cid = cdata.component_id
             for msample in cdata.metric_samples:
                 ts = msample.sampled_at.ToDatetime()
+                # Ensure tz-aware timestamps,
+                # as the API returns tz-naive UTC timestamps
+                ts = ts.replace(tzinfo=timezone.utc)
                 met = Metric.from_proto(msample.metric).name
                 value = (
                     msample.value.simple_metric.value

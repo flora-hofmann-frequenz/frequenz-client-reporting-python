@@ -7,6 +7,7 @@
 ## Upgrading
 
 * Update repo-config and setuptools versions
+* Timestamps in the response are now timezone aware.
 
 ## New Features
 
