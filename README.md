@@ -30,7 +30,7 @@ Please also refer to [examples](https://github.com/frequenz-floss/frequenz-clien
 
 ```bash
 # Choose the version you want to install
-VERSION=0.11.0
+VERSION=0.12.0
 pip install frequenz-client-reporting==$VERSION
 ```
 
@@ -38,21 +38,21 @@ pip install frequenz-client-reporting==$VERSION
 ### Initialize the client
 
 ```python
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from frequenz.client.common.metric import Metric
 from frequenz.client.reporting import ReportingApiClient
 
 # Change server address if needed
-SERVER_URL = "grpc://reporting.api.frequenz.com:443?ssl=true"
+SERVER_URL = "grpc://reporting.api.frequenz.com:443"
 API_KEY = open('api_key.txt').read().strip()
 client = ReportingApiClient(server_url=SERVER_URL, key=API_KEY)
 ```
 
-Besides the microgrid_id, component_ids, and metrics, start, and end time,
+Besides the `microgrid_id`, `component_id`s, `metrics`, start, and end time,
 you can also set the sampling period for resampling using the `resampling_period`
-parameter. For example, to resample data every 15 minutes, use a `resampling_period`
-of timedelta(minutes=15).
+parameter. For example, to resample data every 15 minutes, use
+`resampling_period=timedelta(minutes=15)`.
 
 ### Query metrics for a single microgrid and component:
 
