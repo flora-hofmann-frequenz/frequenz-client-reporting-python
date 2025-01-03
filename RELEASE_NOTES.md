@@ -9,6 +9,8 @@
 
 ## New Features
 
+* Adds new method `receive_aggregated_data` to receive microgrid component data
+  aggregated by user-defined formulae.
 
 ## Bug Fixes
 
