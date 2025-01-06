@@ -29,7 +29,7 @@ dependencies = [
   "typing_extensions >= 4.6.1, < 5",
   "grpc-stubs == 1.53.0.5",
   "frequenz-api-reporting >= 0.5.0, < 0.6",
-  "frequenz-client-common >= 0.2.0, < 0.4",
+  "frequenz-client-common >= 0.3.0, < 0.4",
   "grpcio >=1.66.1, < 2",
   "grpcio-tools >=1.66.1, < 2",
   "protobuf >=5.28.2, < 6",
