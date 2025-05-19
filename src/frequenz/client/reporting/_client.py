@@ -3,11 +3,9 @@
 
 """Client for requests to the Reporting API."""
 
-from collections import abc, namedtuple
-from collections.abc import AsyncIterator, Iterator
-from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
-from typing import Any, AsyncIterable, cast
+from collections.abc import AsyncIterable, AsyncIterator
+from datetime import datetime, timedelta
+from typing import cast
 
 # pylint: disable=no-name-in-module
 from frequenz.api.common.v1.microgrid.microgrid_pb2 import (
@@ -46,6 +44,7 @@ from frequenz.api.reporting.v1.reporting_pb2 import (
 )
 from frequenz.api.reporting.v1.reporting_pb2 import TimeFilter as PBTimeFilter
 from frequenz.api.reporting.v1.reporting_pb2_grpc import ReportingStub
+from frequenz.channels import Receiver
 from frequenz.client.base.channel import ChannelOptions
 from frequenz.client.base.client import BaseApiClient
 from frequenz.client.base.exception import ClientNotConnected
@@ -53,6 +52,7 @@ from frequenz.client.base.streaming import GrpcStreamBroadcaster
 from frequenz.client.common.metric import Metric
 from google.protobuf.timestamp_pb2 import Timestamp as PBTimestamp
 
+from ._batch_unroll_receiver import BatchUnrollReceiver
 from ._types import (
     AggregatedMetric,
     ComponentsDataBatch,
@@ -113,7 +113,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub]):
         return self._stub
 
     # pylint: disable=too-many-arguments
-    async def receive_single_component_data(
+    def receive_single_component_data(
         self,
         *,
         microgrid_id: int,
@@ -124,7 +124,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub]):
         resampling_period: timedelta | None,
         include_states: bool = False,
         include_bounds: bool = False,
-    ) -> AsyncIterator[MetricSample]:
+    ) -> Receiver[MetricSample]:
         """Iterate over the data for a single metric.
 
         Args:
@@ -137,12 +137,10 @@ class ReportingApiClient(BaseApiClient[ReportingStub]):
             include_states: Whether to include the state data.
             include_bounds: Whether to include the bound data.
 
-        Yields:
-            A named tuple with the following fields:
-            * timestamp: The timestamp of the metric sample.
-            * value: The metric value.
+        Returns:
+            A receiver of `MetricSample`s.
         """
-        broadcaster = await self._receive_microgrid_components_data_batch(
+        broadcaster = self._receive_microgrid_components_data_batch(
             microgrid_components=[(microgrid_id, [component_id])],
             metrics=[metrics] if isinstance(metrics, Metric) else metrics,
             start_time=start_time,
@@ -152,14 +150,10 @@ class ReportingApiClient(BaseApiClient[ReportingStub]):
             include_bounds=include_bounds,
         )
 
-        receiver = broadcaster.new_receiver()
-
-        async for batch in receiver:
-            for entry in batch:
-                yield entry
+        return BatchUnrollReceiver(broadcaster.new_receiver())
 
     # pylint: disable=too-many-arguments
-    async def receive_microgrid_components_data(
+    def receive_microgrid_components_data(
         self,
         *,
         microgrid_components: list[tuple[int, list[int]]],
@@ -169,7 +163,7 @@ class ReportingApiClient(BaseApiClient[ReportingStub]):
         resampling_period: timedelta | None,
         include_states: bool = False,
         include_bounds: bool = False,
-    ) -> AsyncIterator[MetricSample]:
+    ) -> Receiver[MetricSample]:
         """Iterate over the data for multiple microgrids and components.
 
         Args:
@@ -182,15 +176,10 @@ class ReportingApiClient(BaseApiClient[ReportingStub]):
             include_states: Whether to include the state data.
             include_bounds: Whether to include the bound data.
 
-        Yields:
-            A named tuple with the following fields:
-            * microgrid_id: The microgrid ID.
-            * component_id: The component ID.
-            * metric: The metric name.
-            * timestamp: The timestamp of the metric sample.
-            * value: The metric value.
+        Returns:
+            A receiver of `MetricSample`s.
         """
-        broadcaster = await self._receive_microgrid_components_data_batch(
+        broadcaster = self._receive_microgrid_components_data_batch(
             microgrid_components=microgrid_components,
             metrics=[metrics] if isinstance(metrics, Metric) else metrics,
             start_time=start_time,
@@ -200,15 +189,11 @@ class ReportingApiClient(BaseApiClient[ReportingStub]):
             include_bounds=include_bounds,
         )
 
-        receiver = broadcaster.new_receiver()
-
-        async for batch in receiver:
-            for entry in batch:
-                yield entry
+        return BatchUnrollReceiver(broadcaster.new_receiver())
 
     # pylint: disable=too-many-arguments
     # pylint: disable=too-many-locals
-    async def _receive_microgrid_components_data_batch(
+    def _receive_microgrid_components_data_batch(
         self,
         *,
         microgrid_components: list[tuple[int, list[int]]],
