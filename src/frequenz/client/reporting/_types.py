@@ -3,11 +3,11 @@
 
 """Types for the Reporting API client."""
 
-from collections import namedtuple
+import math
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
-from datetime import timezone
-from typing import Any
+from datetime import datetime, timezone
+from typing import Any, NamedTuple
 
 # pylint: disable=no-name-in-module
 from frequenz.api.reporting.v1.reporting_pb2 import (
@@ -23,15 +23,20 @@ from frequenz.api.reporting.v1.reporting_pb2 import (
 # pylint: enable=no-name-in-module
 from frequenz.client.common.metric import Metric
 
-MetricSample = namedtuple(
-    "MetricSample", ["timestamp", "microgrid_id", "component_id", "metric", "value"]
-)
-"""Type for a sample of a time series incl. metric type, microgrid and component ID
 
-A named tuple was chosen to allow safe access to the fields while keeping the
-simplicity of a tuple. This data type can be easily used to create a numpy array
-or a pandas DataFrame.
-"""
+class MetricSample(NamedTuple):
+    """Type for a sample of a time series incl. metric type, microgrid and component ID.
+
+    A named tuple was chosen to allow safe access to the fields while keeping the
+    simplicity of a tuple. This data type can be easily used to create a numpy array
+    or a pandas DataFrame.
+    """
+
+    timestamp: datetime
+    microgrid_id: int
+    component_id: str
+    metric: str
+    value: float
 
 
 @dataclass(frozen=True)
@@ -91,7 +96,7 @@ class GenericDataBatch:
                 value = (
                     sample.value.simple_metric.value
                     if sample.value.HasField("simple_metric")
-                    else None
+                    else math.nan
                 )
                 yield MetricSample(ts, mid, cid, met, value)
 
@@ -162,6 +167,6 @@ class AggregatedMetric:
             ),
             microgrid_id=self._data_pb.aggregation_config.microgrid_id,
             component_id=self._data_pb.aggregation_config.aggregation_formula,
-            metric=self._data_pb.aggregation_config.metric,
+            metric=Metric(self._data_pb.aggregation_config.metric).name,
             value=self._data_pb.sample.sample.value,
         )
