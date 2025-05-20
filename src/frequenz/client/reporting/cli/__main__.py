@@ -6,7 +6,6 @@
 import argparse
 import asyncio
 from datetime import datetime, timedelta
-from pprint import pprint
 from typing import AsyncIterator
 
 from frequenz.client.common.metric import Metric
@@ -187,11 +186,6 @@ async def run(  # noqa: DOC502
         async for sample in data_iter():
             print(sample)
 
-    elif fmt == "dict":
-        # Dumping all data as a single dict
-        dct = await iter_to_dict(data_iter())
-        pprint(dct)
-
     elif fmt == "csv":
         # Print header
         print(",".join(MetricSample._fields))
@@ -203,43 +197,6 @@ async def run(  # noqa: DOC502
         raise ValueError(f"Invalid output format: {fmt}")
 
     return
-
-
-async def iter_to_dict(
-    components_data_iter: AsyncIterator[MetricSample],
-) -> dict[int, dict[int, dict[datetime, dict[Metric, float]]]]:
-    """Convert components data iterator into a single dict.
-
-        The nesting structure is:
-        {
-            microgrid_id: {
-                component_id: {
-                    timestamp: {
-                        metric: value
-                    }
-                }
-            }
-        }
-
-    Args:
-        components_data_iter: async generator
-
-    Returns:
-        Single dict with with all components data
-    """
-    ret: dict[int, dict[int, dict[datetime, dict[Metric, float]]]] = {}
-
-    async for ts, mid, cid, met, value in components_data_iter:
-        if mid not in ret:
-            ret[mid] = {}
-        if cid not in ret[mid]:
-            ret[mid][cid] = {}
-        if ts not in ret[mid][cid]:
-            ret[mid][cid][ts] = {}
-
-        ret[mid][cid][ts][met] = value
-
-    return ret
 
 
 if __name__ == "__main__":
