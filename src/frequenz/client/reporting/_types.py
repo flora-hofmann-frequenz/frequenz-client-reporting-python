@@ -113,15 +113,15 @@ class GenericDataBatch:
 
             for state in getattr(item, "states", []):
                 ts = state.sampled_at.ToDatetime().replace(tzinfo=timezone.utc)
-                for name, category in {
+                for category, category_items in {
                     "state": getattr(state, "states", []),
                     "warning": getattr(state, "warnings", []),
                     "error": getattr(state, "errors", []),
                 }.items():
-                    if not isinstance(category, Iterable):
+                    if not isinstance(category_items, Iterable):
                         continue
-                    for s in category:
-                        yield MetricSample(ts, mid, cid, name, s)
+                    for s in category_items:
+                        yield MetricSample(ts, mid, cid, category, s)
 
 
 @dataclass(frozen=True)
