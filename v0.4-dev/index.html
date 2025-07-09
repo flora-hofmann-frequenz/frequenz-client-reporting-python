@@ -474,7 +474,7 @@
           <li class="md-nav__item">
   <a href="#query-metrics-for-a-single-microgrid-and-component" class="md-nav__link">
     <span class="md-ellipsis">
-      Query metrics for a single microgrid and component:
+      Query metrics for a single microgrid and component
     </span>
   </a>
   
@@ -483,7 +483,7 @@
           <li class="md-nav__item">
   <a href="#query-metrics-for-a-single-microgrid-and-sensor" class="md-nav__link">
     <span class="md-ellipsis">
-      Query metrics for a single microgrid and sensor:
+      Query metrics for a single microgrid and sensor
     </span>
   </a>
   
@@ -808,7 +808,7 @@
           <li class="md-nav__item">
   <a href="#query-metrics-for-a-single-microgrid-and-component" class="md-nav__link">
     <span class="md-ellipsis">
-      Query metrics for a single microgrid and component:
+      Query metrics for a single microgrid and component
     </span>
   </a>
   
@@ -817,7 +817,7 @@
           <li class="md-nav__item">
   <a href="#query-metrics-for-a-single-microgrid-and-sensor" class="md-nav__link">
     <span class="md-ellipsis">
-      Query metrics for a single microgrid and sensor:
+      Query metrics for a single microgrid and sensor
     </span>
   </a>
   
@@ -888,7 +888,11 @@
 <a href="https://pypi.org/project/frequenz-client-reporting/"><img alt="PyPI Package" src="https://img.shields.io/pypi/v/frequenz-client-reporting" /></a>
 <a href="https://frequenz-floss.github.io/frequenz-client-reporting-python/"><img alt="Docs" src="https://img.shields.io/badge/docs-latest-informational" /></a></p>
 <h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">¤</a></h2>
-<p>Reporting API client for Python</p>
+<p>A Python client for interacting with the Frequenz Reporting API to efficiently retrieve metric and state data from microgrids.</p>
+<blockquote>
+<p><strong>Who should use this?</strong>
+This client is for developers building applications on top of Frequenz's platform who need structured access to historical component or sensor data via Python or CLI.</p>
+</blockquote>
 <h2 id="supported-platforms">Supported Platforms<a class="headerlink" href="#supported-platforms" title="Permanent link">¤</a></h2>
 <p>The following platforms are officially supported (tested):</p>
 <ul>
@@ -903,38 +907,54 @@ check out the <a href="CONTRIBUTING/">Contributing Guide</a>.</p>
 <p>Please also refer to <a href="https://github.com/frequenz-floss/frequenz-client-reporting-python/tree/HEAD/examples">examples</a> for more detailed usage.</p>
 <h3 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">¤</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Choose the version you want to install</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nv">VERSION</span><span class="o">=</span><span class="m">0</span>.17.0
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nv">VERSION</span><span class="o">=</span><span class="m">0</span>.18.0
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>pip<span class="w"> </span>install<span class="w"> </span>frequenz-client-reporting<span class="o">==</span><span class="nv">$VERSION</span>
 </span></code></pre></div>
 <h3 id="initialize-the-client">Initialize the client<a class="headerlink" href="#initialize-the-client" title="Permanent link">¤</a></h3>
+<p>To use the Reporting API client, you need to initialize it with the server URL and authentication credentials.
+The server URL should point to your Frequenz Reporting API instance, and you will need an authentication key and a signing secret.</p>
+<blockquote>
+<p><strong>Security Note</strong>
+Always keep your authentication key and signing secret secure. Do not hard-code them in your source code or share them publicly.</p>
+</blockquote>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">frequenz.client.common.metric</span><span class="w"> </span><span class="kn">import</span> <span class="n">Metric</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">frequenz.client.reporting</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReportingApiClient</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1"># Change server address</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">SERVER_URL</span> <span class="o">=</span> <span class="s2">&quot;grpc://replace-this-with-your-server-url:port&quot;</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">API_KEY</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;api_key.txt&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="n">client</span> <span class="o">=</span> <span class="n">ReportingApiClient</span><span class="p">(</span><span class="n">server_url</span><span class="o">=</span><span class="n">SERVER_URL</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">API_KEY</span><span class="p">)</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">frequenz.client.common.metric</span><span class="w"> </span><span class="kn">import</span> <span class="n">Metric</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">frequenz.client.reporting</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReportingApiClient</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># Change server address</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">SERVER_URL</span> <span class="o">=</span> <span class="s2">&quot;grpc://replace-this-with-your-server-url:port&quot;</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="n">AUTH_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;REPORTING_API_AUTH_KEY&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># It is recommended to use a proper secret store to get the secret</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="c1"># For local development, make sure not to leave it in the shell history</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="n">SIGN_SECRET</span><span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;REPORTING_API_SIGN_SECRET&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="n">client</span> <span class="o">=</span> <span class="n">ReportingApiClient</span><span class="p">(</span><span class="n">server_url</span><span class="o">=</span><span class="n">SERVER_URL</span><span class="p">,</span> <span class="n">auth_key</span><span class="o">=</span><span class="n">AUTH_KEY</span><span class="p">,</span> <span class="n">sign_secret</span><span class="o">=</span><span class="n">SIGN_SECRET</span><span class="p">)</span>
 </span></code></pre></div>
-<p>Besides the <code>microgrid_id</code>, <code>component_id</code>s, <code>metrics</code>, start, and end time,
-you can also set the sampling period for resampling using the <code>resampling_period</code>
-parameter. For example, to resample data every 15 minutes, use
-<code>resampling_period=timedelta(minutes=15)</code>.</p>
-<h3 id="query-metrics-for-a-single-microgrid-and-component">Query metrics for a single microgrid and component:<a class="headerlink" href="#query-metrics-for-a-single-microgrid-and-component" title="Permanent link">¤</a></h3>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">sample</span> <span class="k">async</span> <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">client</span><span class="o">.</span><span class="n">list_single_component_data</span><span class="p">(</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>        <span class="n">microgrid_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>        <span class="n">component_id</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>        <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">Metric</span><span class="o">.</span><span class="n">AC_ACTIVE_POWER</span><span class="p">,</span> <span class="n">Metric</span><span class="o">.</span><span class="n">AC_REACTIVE_POWER</span><span class="p">],</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>        <span class="n">start_time</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="s2">&quot;2024-05-01T00:00:00&quot;</span><span class="p">),</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>        <span class="n">end_time</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="s2">&quot;2024-05-02T00:00:00&quot;</span><span class="p">),</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>        <span class="n">resampling_period</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="p">)</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="p">]</span>
+<h3 id="query-metrics-for-a-single-microgrid-and-component">Query metrics for a single microgrid and component<a class="headerlink" href="#query-metrics-for-a-single-microgrid-and-component" title="Permanent link">¤</a></h3>
+<p>This method supports:
+- Selecting specific <code>microgrid_id</code> and <code>component_id</code>
+- Choosing one or more <code>metrics</code> to retrieve
+- Defining a time range with <code>start_time</code> and <code>end_time</code>
+- Optional downsampling using <code>resampling_period</code> (e.g., <code>timedelta(minutes=15)</code>)</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Asynchronously collect metric data samples into a list</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">sample</span> <span class="k">async</span> <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">client</span><span class="o">.</span><span class="n">receive_single_component_data</span><span class="p">(</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>        <span class="n">microgrid_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># ID of the microgrid to query</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>        <span class="n">component_id</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>  <span class="c1"># ID of the specific component to query</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>        <span class="n">metrics</span><span class="o">=</span><span class="p">[</span>  <span class="c1"># List of metrics to retrieve</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>            <span class="n">Metric</span><span class="o">.</span><span class="n">AC_ACTIVE_POWER</span><span class="p">,</span>      <span class="c1"># AC active power</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>            <span class="n">Metric</span><span class="o">.</span><span class="n">AC_REACTIVE_POWER</span><span class="p">,</span>      <span class="c1"># AC reactive power</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>        <span class="p">],</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>        <span class="n">start_time</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="s2">&quot;2024-05-01T00:00:00&quot;</span><span class="p">),</span>  <span class="c1"># Start of query range (UTC)</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>        <span class="n">end_time</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="s2">&quot;2024-05-02T00:00:00&quot;</span><span class="p">),</span>    <span class="c1"># End of query range (UTC)</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>        <span class="n">resampling_period</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>  <span class="c1"># Optional: downsample data to 5-second intervals</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>    <span class="p">)</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="p">]</span>
 </span></code></pre></div>
-<h3 id="query-metrics-for-a-single-microgrid-and-sensor">Query metrics for a single microgrid and sensor:<a class="headerlink" href="#query-metrics-for-a-single-microgrid-and-sensor" title="Permanent link">¤</a></h3>
+<h3 id="query-metrics-for-a-single-microgrid-and-sensor">Query metrics for a single microgrid and sensor<a class="headerlink" href="#query-metrics-for-a-single-microgrid-and-sensor" title="Permanent link">¤</a></h3>
+<p>To query sensor data for a specific microgrid, you can use the following method.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">sample</span> <span class="k">async</span> <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">client</span><span class="o">.</span><span class="n">receive_single_sensor_data</span><span class="p">(</span>
@@ -948,6 +968,7 @@ parameter. For example, to resample data every 15 minutes, use
 </span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="p">]</span>
 </span></code></pre></div>
 <h3 id="query-metrics-for-multiple-microgrids-and-components">Query metrics for multiple microgrids and components<a class="headerlink" href="#query-metrics-for-multiple-microgrids-and-components" title="Permanent link">¤</a></h3>
+<p>It is possible to query data for multiple microgrids and their components in a single request.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Set the microgrid ID and the component IDs that belong to the microgrid</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1"># Multiple microgrids and components can be queried at once</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">microgrid_id1</span> <span class="o">=</span> <span class="mi">1</span>
@@ -961,7 +982,7 @@ parameter. For example, to resample data every 15 minutes, use
 </span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
 </span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
 </span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="n">sample</span> <span class="k">async</span> <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span>
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    <span class="n">client</span><span class="o">.</span><span class="n">list_microgrid_components_data</span><span class="p">(</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    <span class="n">client</span><span class="o">.</span><span class="n">receive_microgrid_components_data</span><span class="p">(</span>
 </span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>        <span class="n">microgrid_components</span><span class="o">=</span><span class="n">microgrid_components</span><span class="p">,</span>
 </span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>        <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">Metric</span><span class="o">.</span><span class="n">AC_ACTIVE_POWER</span><span class="p">,</span> <span class="n">Metric</span><span class="o">.</span><span class="n">AC_REACTIVE_POWER</span><span class="p">],</span>
 </span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>        <span class="n">start_time</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="s2">&quot;2024-05-01T00:00:00&quot;</span><span class="p">),</span>
@@ -973,6 +994,7 @@ parameter. For example, to resample data every 15 minutes, use
 </span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="p">]</span>
 </span></code></pre></div>
 <h3 id="query-metrics-for-multiple-microgrids-and-sensors">Query metrics for multiple microgrids and sensors<a class="headerlink" href="#query-metrics-for-multiple-microgrids-and-sensors" title="Permanent link">¤</a></h3>
+<p>Similar to the previous example, you can query multiple microgrids and their sensors in a single request.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Set the microgrid ID and the sensor IDs that belong to the microgrid</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># Multiple microgrids and sensors can be queried at once</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">microgrid_id1</span> <span class="o">=</span> <span class="mi">1</span>
@@ -997,26 +1019,28 @@ parameter. For example, to resample data every 15 minutes, use
 </span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="p">]</span>
 </span></code></pre></div>
 <h3 id="optionally-convert-the-data-to-a-pandas-dataframe">Optionally convert the data to a pandas DataFrame<a class="headerlink" href="#optionally-convert-the-data-to-a-pandas-dataframe" title="Permanent link">¤</a></h3>
+<p>For easier data manipulation and analysis, you can convert the collected data into a pandas DataFrame.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </span></code></pre></div>
 <h2 id="command-line-client-tool">Command line client tool<a class="headerlink" href="#command-line-client-tool" title="Permanent link">¤</a></h2>
-<p>The package contains a command-line tool that can be used to request 
-microgrid component data from the reporting API.
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>reporting-cli<span class="w"> </span><span class="se">\</span>
+<p>The package contains a command-line tool that can be used to request
+microgrid component data from the reporting API.</p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>reporting-cli<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span>--url<span class="w"> </span>localhost:4711<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span>--key<span class="o">=</span><span class="k">$(</span>&lt;api_key.txt<span class="k">)</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span>--mid<span class="w"> </span><span class="m">42</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span>--cid<span class="w"> </span><span class="m">23</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span>--metrics<span class="w"> </span>AC_ACTIVE_POWER<span class="w"> </span>AC_REACTIVE_POWER<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">    </span>--start<span class="w"> </span><span class="m">2024</span>-05-01T00:00:00<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span>--end<span class="w"> </span><span class="m">2024</span>-05-02T00:00:00<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">    </span>--format<span class="w"> </span>csv<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">    </span>--states<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">    </span>--bounds
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span>--auth_key<span class="o">=</span><span class="nv">$AUTH_KEY</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span>--sign_secret<span class="o">=</span><span class="nv">$SIGN_SECRET</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span>--mid<span class="w"> </span><span class="m">42</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span>--cid<span class="w"> </span><span class="m">23</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">    </span>--metrics<span class="w"> </span>AC_ACTIVE_POWER<span class="w"> </span>AC_REACTIVE_POWER<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span>--start<span class="w"> </span><span class="m">2024</span>-05-01T00:00:00<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">    </span>--end<span class="w"> </span><span class="m">2024</span>-05-02T00:00:00<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">    </span>--format<span class="w"> </span>csv<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">    </span>--states<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">    </span>--bounds
 </span></code></pre></div>
-In addition to the default CSV format the data can be output as individual samples or in <code>dict</code> format.</p>
+In addition to the default CSV format, individual samples can also be output using the <code>--format iter</code> option.</p>
 
 
 
